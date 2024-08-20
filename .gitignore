@@ -1,0 +1,25 @@
+# Ignore binary files and intermediate files
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+*.suo
+*.user
+*.userprefs
+*.csproj
+*.sln
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.VC.opendb
+*.rsp
+
+# Ignore macOS specific files
+.DS_Store
+
+# Ignore Windows specific files
+Thumbs.db
+/.vs
+.vsconfig
+.vscode/
+.ignore
