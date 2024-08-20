@@ -4,6 +4,8 @@
 #include "BS_Utility.h"
 #include "Json.h"
 #include "JsonUtilities.h"
+#include <Kismet/GameplayStatics.h>
+#include <BS_ServerManager.h>
 
 FString UBS_Utility::ParseJson(const FString& jsonData)
 {
@@ -100,3 +102,16 @@ void UBS_Utility::ResTemp(FHttpRequestPtr req, FHttpResponsePtr res, bool isSucc
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("요청 실패"));
 	}
 }
+
+// ABS_ServerManager* UBS_Utility::GetServerManager(UWorld* world)
+// {
+//     auto* sm = Cast<ABS_ServerManager>(
+//         UGameplayStatics::GetActorOfClass(world, ABS_ServerManager::StaticClass()));
+//     if(sm)
+//     {
+//         //해당 액터로 뭔가 하기
+        
+//     }
+
+//     return sm;
+// }

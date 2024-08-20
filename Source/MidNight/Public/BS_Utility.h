@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Http.h"
+#include "BS_ServerManager.h"
 #include "BS_Utility.generated.h"
 
 /**
@@ -33,5 +34,8 @@ public:
 	// XXX 테스트 용 http 요청
 	static void ReqTemp();
 	static void ResTemp(FHttpRequestPtr req, FHttpResponsePtr res, bool isSuccess);
+	
+	// 서버 매니저 가져오기
+	// static ABS_ServerManager* GetServerManager(UWorld* world);
 	
 };

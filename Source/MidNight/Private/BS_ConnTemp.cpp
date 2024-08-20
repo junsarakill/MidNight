@@ -18,7 +18,7 @@ void ABS_ConnTemp::BeginPlay()
 {
 	Super::BeginPlay();
 
-	RunPython();
+	// RunPython();
 	
 }
 
@@ -27,6 +27,14 @@ void ABS_ConnTemp::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (FPlatformProcess::IsProcRunning(processHandle))
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Python script is still running."));
+    }
+    else
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Python script has finished."));
+    }
 }
 
 void ABS_ConnTemp::RunPython()
@@ -36,15 +44,15 @@ void ABS_ConnTemp::RunPython()
     FString PythonExecutable = TEXT("C:/Program Files/Epic Games/UE_5.4/Engine/Binaries/ThirdParty/Python3/Win64/python.exe"); // 파이썬 경로를 수정하세요.
 	// FString PythonExecutable = TEXT("C:/Program Files/python/python.exe"); // 파이썬 경로를 수정하세요.
     // 실행할 스크립트 경로
-    FString ScriptPath = FPaths::ProjectDir() + TEXT("Scripts/throw.py"); // 스크립트 경로를 수정하세요.
+    FString ScriptPath = FPaths::ProjectContentDir() + TEXT("Scripts/give.py"); // 스크립트 경로를 수정하세요.
 
     // 실행할 명령어 (스크립트 경로 포함)
     FString Command = FString::Printf(TEXT("\"%s\" \"%s\""), *PythonExecutable, *ScriptPath);
 
     // 프로세스 실행
-    FProcHandle ProcessHandle = FPlatformProcess::CreateProc(*PythonExecutable, *Command, true, false, false, nullptr, 0, nullptr, nullptr);
+	processHandle = FPlatformProcess::CreateProc(*PythonExecutable, *ScriptPath, true, false, false, nullptr, 0, nullptr, nullptr);
 
-    if (ProcessHandle.IsValid())
+    if (processHandle.IsValid())
     {
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Python script is running successfully."));
     }
@@ -52,10 +60,4 @@ void ABS_ConnTemp::RunPython()
     {
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Failed to run Python script."));
     }
-
-	int32 ReturnCode;
-	if (FPlatformProcess::GetProcReturnCode(ProcessHandle, &ReturnCode))
-	{
-		UE_LOG(LogTemp, Log, TEXT("Process exited with return code: %d"), ReturnCode);
-	}
 }
