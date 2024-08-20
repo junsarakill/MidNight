@@ -1,3 +1,5 @@
+# 양손 / 손이 쥐어져있는 상태로 어깨위에 올라가고 입을 벌리면 먹는거
+
 import cv2
 import mediapipe as mp
 
