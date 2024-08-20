@@ -7,10 +7,7 @@
 		{
 			"Name": "MidNight",
 			"Type": "Runtime",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine"
-			]
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
@@ -20,70 +17,6 @@
 			"TargetAllowList": [
 				"Editor"
 			]
-		},
-		{
-			"Name": "ChaosCloth",
-			"Enabled": false
-		},
-		{
-			"Name": "SequencerAnimTools",
-			"Enabled": false
-		},
-		{
-			"Name": "CameraShakePreviewer",
-			"Enabled": false
-		},
-		{
-			"Name": "GameplayCameras",
-			"Enabled": false
-		},
-		{
-			"Name": "Niagara",
-			"Enabled": false
-		},
-		{
-			"Name": "LevelSequenceEditor",
-			"Enabled": false
-		},
-		{
-			"Name": "NiagaraSimCaching",
-			"Enabled": false
-		},
-		{
-			"Name": "ChaosNiagara",
-			"Enabled": false
-		},
-		{
-			"Name": "AlembicImporter",
-			"Enabled": false
-		},
-		{
-			"Name": "GeometryCache",
-			"Enabled": false
-		},
-		{
-			"Name": "AnimationData",
-			"Enabled": false
-		},
-		{
-			"Name": "ControlRig",
-			"Enabled": false
-		},
-		{
-			"Name": "ControlRigSpline",
-			"Enabled": false
-		},
-		{
-			"Name": "ControlRigModules",
-			"Enabled": false
-		},
-		{
-			"Name": "IKRig",
-			"Enabled": false
-		},
-		{
-			"Name": "PythonScriptPlugin",
-			"Enabled": true
 		}
 	]
 }
