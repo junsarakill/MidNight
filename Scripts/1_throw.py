@@ -1,7 +1,6 @@
-# 양손 / 무릎 아래로 손을 내려서 주먹을 쥐었다 폈다 하면 버리는 모션
-
 import cv2
 import mediapipe as mp
+import requests  # 서버에 데이터를 보내기 위해 추가
 
 # Mediapipe 솔루션 초기화
 mp_pose = mp.solutions.pose
@@ -10,6 +9,9 @@ mp_drawing = mp.solutions.drawing_utils
 
 # 웹캠 설정
 cap = cv2.VideoCapture(0)
+
+# 서버 URL 설정
+server_url = "http://127.0.0.1:8000/throwing"
 
 def is_hand_below_knees(pose_landmarks, hand_landmarks, image_shape):
     """손이 무릎 아래에 있는지 확인하는 함수"""
@@ -76,6 +78,17 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
         if is_hand_below_knees(pose_results.pose_landmarks, hands_results.multi_hand_landmarks, image.shape):
             if is_hand_closed(hands_results.multi_hand_landmarks):
                 cv2.putText(image, "Clear", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3, cv2.LINE_AA)
+                # 서버로 1의 값을 POST 방식으로 전송
+                response = requests.post(server_url, json={"value": 1})
+                print("서버 응답:", response.json())
+            else:
+                # 손이 쥐어지지 않았을 때 0을 보냄
+                response = requests.post(server_url, json={"value": 0})
+                print("서버 응답:", response.json())
+        else:
+            # 손이 무릎 아래에 있지 않을 때 0을 보냄
+            response = requests.post(server_url, json={"value": 0})
+            print("서버 응답:", response.json())
 
         # 이미지 좌우 반전 (글씨 포함)
         image = cv2.flip(image, 1)

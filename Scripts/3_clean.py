@@ -1,8 +1,6 @@
-# 3. 양손 / 손을 움켜진 상태에서 좌우로 팔을 좌우로 흔들어야 clear가 뜨는
-
 import cv2
 import mediapipe as mp
-import numpy as np
+import requests  # 서버에 데이터를 전송하기 위해 추가
 
 # Mediapipe 솔루션 초기화
 mp_pose = mp.solutions.pose
@@ -11,6 +9,9 @@ mp_drawing = mp.solutions.drawing_utils
 
 # 웹캠 설정
 cap = cv2.VideoCapture(0)
+
+# 서버 URL 설정
+server_url = "http://127.0.0.1:8000/cleaning"
 
 # 손의 움직임 추적을 위한 변수 초기화
 previous_left_hand_x = None
@@ -112,6 +113,22 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                     cv2.putText(image, "Clear", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3, cv2.LINE_AA)
                     shake_count = 0  # 초기화
                     shake_direction = 0  # 초기화
+
+                    # 서버로 1의 값을 POST 방식으로 전송
+                    response = requests.post(server_url, json={"value": 1})
+                    print("서버 응답:", response.json())
+                else:
+                    # 행동이 완성되지 않았을 때 0을 전송
+                    response = requests.post(server_url, json={"value": 0})
+                    print("서버 응답:", response.json())
+            else:
+                # 조건이 충족되지 않았을 때 0을 전송
+                response = requests.post(server_url, json={"value": 0})
+                print("서버 응답:", response.json())
+        else:
+            # 손이 감지되지 않았을 때 0을 전송
+            response = requests.post(server_url, json={"value": 0})
+            print("서버 응답:", response.json())
 
         # 이미지 좌우 반전 (글씨 포함)
         image = cv2.flip(image, 1)

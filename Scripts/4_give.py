@@ -1,8 +1,6 @@
-# 4. 오른손 나뭇가지 내미는 모션 정면으로도 가능
-
 import cv2
 import mediapipe as mp
-import numpy as np
+import requests  # 서버로 데이터를 전송하기 위해 추가
 
 # Mediapipe 솔루션 초기화
 mp_pose = mp.solutions.pose
@@ -10,6 +8,9 @@ mp_drawing = mp.solutions.drawing_utils
 
 # 웹캠 설정
 cap = cv2.VideoCapture(0)
+
+# 서버 URL 설정
+server_url = "http://127.0.0.1:8000/giving"
 
 # 동일 선상에 있는지 확인하는 임계값
 alignment_threshold = 0.05  # x 좌표 차이의 허용 오차
@@ -57,8 +58,14 @@ with mp_pose.Pose(min_detection_confidence=0.95, min_tracking_confidence=0.95) a
             # 오른쪽 팔이 어깨와 동일 선상에 있는지 확인
             if is_right_arm_aligned(pose_results.pose_landmarks, image.shape):
                 cv2.putText(image, "Down", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3, cv2.LINE_AA)
+                # 서버로 값 전송 (1)
+                response = requests.post(server_url, json={"value": 0})
+                print("서버 응답:", response.json())
             else:
                 cv2.putText(image, "Up", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3, cv2.LINE_AA)
+                # 서버로 값 전송 (0)
+                response = requests.post(server_url, json={"value": 1})
+                print("서버 응답:", response.json())
 
         # 이미지 좌우 반전 (글씨 포함)
         image = cv2.flip(image, 1)
