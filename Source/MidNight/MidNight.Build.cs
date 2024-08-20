@@ -8,7 +8,17 @@ public class MidNight : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+		PublicDependencyModuleNames.AddRange(new string[] { 
+		"Core"
+		, "CoreUObject"
+		, "Engine"
+		, "InputCore"
+		, "EnhancedInput"
+		, "Json"
+		, "JsonUtilities"
+		, "HTTP"
+		, "PythonScriptPlugin"
+		 });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
