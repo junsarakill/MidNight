@@ -79,4 +79,10 @@ public:
 	// 레벨 이동을 위한 함수
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool OpenLevel03 = false;
+
+
+	// 레벨 이동 전 Player의 위치를 저장하는
+	FVector PlayerEndVector;
+
+	void GameinstanceUpdate() const;
 };

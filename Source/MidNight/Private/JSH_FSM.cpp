@@ -3,6 +3,7 @@
 
 #include "JSH_FSM.h"
 
+#include "JSH_GameInstance.h"
 #include "JSH_Player.h"
 #include "JSH_Point.h"
 
@@ -154,6 +155,8 @@ void UJSH_FSM::Point03State()
 		{
 			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
+			PlayerEndVector = Player->GetActorLocation();
+			GameinstanceUpdate();
 			OpenLevel03 = true; // false로는 bp에서 변경
 			End03 = false;
 		}
@@ -161,6 +164,19 @@ void UJSH_FSM::Point03State()
 	else
 	{
 		TState = TopState::Idle;
+	}
+}
+
+
+
+void UJSH_FSM::GameinstanceUpdate() const
+{
+	UJSH_GameInstance* GameInstance = Cast<UJSH_GameInstance>(GetWorld()->GetGameInstance());
+	
+	// GameInstance가 유효한지 확인
+	if (GameInstance)
+	{
+		GameInstance->EndVector = PlayerEndVector;
 	}
 }
 
