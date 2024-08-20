@@ -20,12 +20,12 @@ void UMH_DropComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
 }
 
 
 // Called every frame
-void UMH_DropComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UMH_DropComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                      FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -42,15 +42,41 @@ void UMH_DropComponent::DropBread()
 	AActor* Owner = GetOwner();
 	//USkeletalMeshComponent* MeshComp = Owner->FindComponentByClass<USkeletalMeshComponent>();
 
-	//if (MeshComp && MeshComp->DoesSocketExist(SocketName)) // 소켓 존재 여부 확인
+	//if (MeshComp && MeshComp->DoesSocketExist(SocketName))
 	//{
-		// 소켓의 위치
-		//FTransform SocketTransform = MeshComp->GetSocketTransform(SocketName);
+	//FTransform SocketTransform = MeshComp->GetSocketTransform(SocketName);
 
+
+	int32 random = FMath::RandRange(0, 9);
+
+	FTransform posit = GetOwner()->GetActorTransform();
+	FVector Scale1(1.f, 1.f, 1.f);
+	FVector Scale2(0.7f, 0.7f, 0.7f);
+	FVector Location1(3.f, 40.f, 0.f);
+	FVector Location2(5.f, 50.f, 0.f);
+	FRotator Rotation(0.f, 0.f, 0.f);
+
+	FTransform Transform1(Rotation, posit.GetLocation() + Location1, Scale1);
+	FTransform Transform2(Rotation, posit.GetLocation() + Location2, Scale2);
 	
-		FTransform posit = GetOwner()->GetActorTransform();
-		GetWorld()->SpawnActor<AActor>(Bread, posit);
+	if (random < 3)
+	{
+		if (Owner)
+		{
+			AActor* SpawnedActor2 = GetWorld()->SpawnActor<AActor>(Bread, Transform2);
+			
+			if (SpawnedActor2)
+			{
+				SpawnedActor2->SetActorScale3D(Scale2); // 스폰된 액터의 스케일을 설정
+			}
+			GetWorld()->SpawnActor<AActor>(Bread, Transform1);
+			
+		}
+	}
+	else
+	{
+		GetWorld()->SpawnActor<AActor>(Bread, Transform1);
+	}
+
 	//}
-	
 }
-
