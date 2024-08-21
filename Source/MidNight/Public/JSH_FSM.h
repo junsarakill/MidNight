@@ -175,4 +175,7 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int WidgetINt = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
+	bool DelMan = false;
 };
