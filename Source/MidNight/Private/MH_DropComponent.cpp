@@ -85,6 +85,16 @@ void UMH_DropComponent::DropBread()
 
 	FTransform Transform1(Rotation, posit.GetLocation() + Location1, Scale1);
 	FTransform Transform2(Rotation, posit.GetLocation() + Location2, Scale1);
+
+	if (DropAnimPlay)
+	{
+		/*
+		UAnimInstance* AnimInstance = GetOwner()->FindComponentByClass<USkeletalMeshComponent>();
+		if (AnimInstance && !AnimInstance->Montage_IsPlaying(MontageToPlay))
+		{
+			AnimInstance->Montage_Play(MontageToPlay);
+		}*/
+	}
 	
 	if (random < 3)
 	{
@@ -122,7 +132,6 @@ void UMH_DropComponent::MovePlayer()
 		// 목표 위치 설정
 		TargetLocation = CurrentLocation + ForwardVector * Distance;
 		bIsMoving = true;
-
 		
 	}
 }
