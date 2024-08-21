@@ -1,23 +1,27 @@
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+import uvicorn
 
 app = FastAPI()
 
 @app.post("/throwing")
-def receive_value(data: dict):
+def throwing_value(data: dict):
     print("Received data:", data)
-    return {"status": "success", "received_value": data}
-
+    return JSONResponse(content={"status": "success", "received_value": data})
 @app.post("/eating")
-def receive_value(data: dict):
+def eating_value(data: dict):
     print("Received data:", data)
-    return {"status": "success", "received_value": data}
+    return JSONResponse(content={"status": "success", "received_value": data})
 
 @app.post("/cleaning")
-def receive_value(data: dict):
+def cleaning_value(data: dict):
     print("Received data:", data)
-    return {"status": "success", "received_value": data}
+    return JSONResponse(content={"status": "success", "received_value": data})
 
 @app.post("/giving")
-def receive_value(data: dict):
+def giving_value(data: dict):
     print("Received data:", data)
-    return {"status": "success", "received_value": data}
+    return JSONResponse(content={"status": "success", "received_value": data})
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

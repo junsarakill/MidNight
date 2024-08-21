@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import requests  # 서버에 데이터를 보내기 위해 추가
+import time
 
 # Mediapipe 솔루션 초기화
 mp_pose = mp.solutions.pose
@@ -11,7 +12,7 @@ mp_drawing = mp.solutions.drawing_utils
 cap = cv2.VideoCapture(0)
 
 # 서버 URL 설정
-server_url = "http://127.0.0.1:8000/throwing"
+server_url = "http://192.168.1.59:8000/throwing"
 
 def is_hand_below_knees(pose_landmarks, hand_landmarks, image_shape):
     """손이 무릎 아래에 있는지 확인하는 함수"""
@@ -81,6 +82,8 @@ with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as 
                 # 서버로 1의 값을 POST 방식으로 전송
                 response = requests.post(server_url, json={"value": 1})
                 print("서버 응답:", response.json())
+                time.sleep(2)
+                break
             else:
                 # 손이 쥐어지지 않았을 때 0을 보냄
                 response = requests.post(server_url, json={"value": 0})

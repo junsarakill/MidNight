@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import requests  # 서버로 데이터를 전송하기 위해 추가
+import time
 
 # Mediapipe 솔루션 초기화
 mp_pose = mp.solutions.pose
@@ -10,7 +11,7 @@ mp_drawing = mp.solutions.drawing_utils
 cap = cv2.VideoCapture(0)
 
 # 서버 URL 설정
-server_url = "http://127.0.0.1:8000/giving"
+server_url = "http://192.168.1.59:8000/giving"
 
 # 동일 선상에 있는지 확인하는 임계값
 alignment_threshold = 0.05  # x 좌표 차이의 허용 오차
@@ -66,6 +67,8 @@ with mp_pose.Pose(min_detection_confidence=0.95, min_tracking_confidence=0.95) a
                 # 서버로 값 전송 (0)
                 response = requests.post(server_url, json={"value": 1})
                 print("서버 응답:", response.json())
+                time.sleep(2.0)
+                break
 
         # 이미지 좌우 반전 (글씨 포함)
         image = cv2.flip(image, 1)
