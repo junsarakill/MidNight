@@ -30,6 +30,22 @@ void UJSH_FSM::BeginPlay()
 	Player = Cast<AJSH_Player>(GetOwner());
 
 	GameInstance = Cast<UJSH_GameInstance>(GetWorld()->GetGameInstance());
+
+	if(GameInstance)
+	{
+		if(GameInstance->GameProgress >= 4)
+		{
+			DeleteMan = true;
+			DelMan = true;
+		}
+		else if(GameInstance->GameProgress >= 5)
+		{
+			DeleteMan = false;
+			DelMan = false;
+		}
+
+	}
+	
 }
 
 
@@ -213,7 +229,7 @@ void UJSH_FSM::Point01State()
 			CoinFun();
 			GetCoin = true;
 			
-			GameInstance->GameProgress = 1;
+			GameInstance->GameProgress = 0;
 			
 			End01 = false;
 
@@ -245,7 +261,7 @@ void UJSH_FSM::BreadEatState()
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
-			//GameInstance->GameProgress = 1;
+			GameInstance->GameProgress = 1;
 			
 			GetCoin = true; 
 			EndBreadEat = false;
@@ -281,7 +297,7 @@ void UJSH_FSM::Point02State()
 			GameinstanceUpdate();
 
 			CoinFun();
-			GameInstance->GameProgress = 2;
+			// GameInstance->GameProgress = 2;
 			GetCoin = true; 
 			End02 = false;
 
@@ -312,7 +328,7 @@ void UJSH_FSM::Point03State()
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
-			GameInstance->GameProgress = 3;
+			GameInstance->GameProgress = 2;
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			//OpenLevel03 = true; // false로는 bp에서 변경
 			End03 = false;
@@ -349,7 +365,7 @@ void UJSH_FSM::Point04State()
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
-			GameInstance->GameProgress = 4;
+			//GameInstance->GameProgress = 4;
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			//OpenLevel03 = true; // false로는 bp에서 변경
 			End04 = false;
@@ -387,7 +403,7 @@ void UJSH_FSM::Point05State()
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
-			GameInstance->GameProgress = 5;
+			//GameInstance->GameProgress = 5;
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			//OpenLevel03 = true; // false로는 bp에서 변경
 			End05 = false;
@@ -400,6 +416,7 @@ void UJSH_FSM::Point05State()
 			//위젯을 실행시키는 함수
 			widgetOn = true;
 			WidgetINt = 5;
+
 		}
 	}
 	else
@@ -424,7 +441,7 @@ void UJSH_FSM::Point06State()
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
-			GameInstance->GameProgress = 6;
+			GameInstance->GameProgress = 4;
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			//OpenLevel03 = true; // false로는 bp에서 변경
 			End06 = false;
@@ -440,6 +457,8 @@ void UJSH_FSM::Point06State()
 			//위젯을 실행시키는 함수
 			widgetOn = true;
 			WidgetINt = 6;
+
+
 		}
 	}
 	else
@@ -464,7 +483,7 @@ void UJSH_FSM::Point08State()
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
-			GameInstance->GameProgress = 8;
+			GameInstance->GameProgress = 5;
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			//OpenLevel03 = true; // false로는 bp에서 변경
 			End08 = false;
