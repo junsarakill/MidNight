@@ -9,6 +9,7 @@
 #include "Sockets.h"
 #include "SocketSubsystem.h"
 #include "Interfaces/IPv4/IPv4Address.h" 
+#include "MH_Player.h"
 // #include "HAL/RunnableThread.h" 
 // #include "PythonScriptPlugin/PythonScriptPlugin.h"
 // #include "PythonScriptPlugin.h" // PythonScriptPlugin 관련 기본 헤더
@@ -181,6 +182,9 @@ void ABS_ServerManager::CreateClient(FString ip, int32 port)
 		port = serverPort;
 	}
 
+	getData = TEXT("");
+
+
 
     // 클라이언트 소켓 생성
     ClientSocket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("TCP Client"), false);
@@ -216,8 +220,17 @@ void ABS_ServerManager::ReceiveData()
                 if (BytesRead > 0)
                 {
                     FString ReceivedString = FString(ANSI_TO_TCHAR(reinterpret_cast<const char*>(ReceivedData.GetData())));
-                    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("Received: %s"), *ReceivedString));
-					// @@
+                    GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, FString::Printf(TEXT("Received: %s"), *ReceivedString));
+					// @@ 데이터 처리
+					if(ReceivedString.Contains(TEXT("1")))
+					{
+						GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, FString::Printf(TEXT("모션 캡쳐 성공")));
+						getData = 1;
+						// 데이터를 플레이어에게 전달
+						SendDateToPlayer(getData);
+						// 통신 종료
+						Disconnect();
+					}
                 }
                 else
 				{
@@ -249,6 +262,17 @@ void ABS_ServerManager::Disconnect()
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("소켓 없음"));
 	}
 	
+}
+
+void ABS_ServerManager::SendDateToPlayer(int32 data)
+{
+	if(!player)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("플레이어 없음"));
+		return;
+	}
+	
+	player->ReceiveDataFromSM(data);
 }
 
 void ABS_ServerManager::TestRecieveData()

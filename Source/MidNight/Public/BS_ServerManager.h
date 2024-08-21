@@ -77,6 +77,14 @@ public:
 	FSocket* ClientSocket;
 	// 서버 주소
     TSharedPtr<FInternetAddr> ServerAddr;
+
+	// 받은 데이터
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
+	int32 getData;
+
+	// 현재 플레이어
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Objects")
+	class AMH_Player* player;
 	
 	
 
@@ -107,6 +115,7 @@ public:
 	// // QTE 값 받기
 	// void ResGetValue(FHttpRequestPtr req, FHttpResponsePtr res, bool isSuccess);
 
+	void TestRecieveData();
 
 
 	// void ReqPostTemp();
@@ -124,8 +133,8 @@ public:
 	void Disconnect();
 
 
-
-	void TestRecieveData();
+	// 플레이어에게 데이터 전달
+	void SendDateToPlayer(int32 data);
 	
 
 	
