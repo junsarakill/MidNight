@@ -134,6 +134,7 @@ void ABS_ServerManager::RunQTEScript(EQTEType type)
 	{
 		if(pyName.type == type)
 		{
+			
 			FString pyPath = pyDefaultPath + pyName.pyName;
 			RunPythonScript(pyPath);
 			break;
@@ -148,6 +149,7 @@ void ABS_ServerManager::RunAsyncScript(EQTEType type)
 	{
 		if(pyName.type == type)
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("%s 타입 실행"), *UEnum::GetValueAsString(type)));
 			FString pyPath = pyDefaultPath + pyName.pyName;
 			RunAsyncPythonScript(pyPath);
 			break;
