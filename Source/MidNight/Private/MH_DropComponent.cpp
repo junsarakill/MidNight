@@ -18,7 +18,7 @@ UMH_DropComponent::UMH_DropComponent()
 void UMH_DropComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Owner = GetOwner();
 	// ...
 }
 
@@ -28,8 +28,24 @@ void UMH_DropComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                       FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (bIsMoving)
+	{
+		if (Owner)
+		{
+			FVector CurrentLocation = Owner->GetActorLocation();
+			FVector Direction = (TargetLocation - CurrentLocation).GetSafeNormal();
+			FVector NewLocation = CurrentLocation + Direction * MoveSpeed * DeltaTime;
 
-	// ...
+			// 목표 위치에 거의 도달했는지 확인
+			if (FVector::Dist(NewLocation, TargetLocation) < 5.0f)
+			{
+				NewLocation = TargetLocation;
+				bIsMoving = false; // 목표 위치에 도달했으므로 이동 중지
+			}
+
+			Owner->SetActorLocation(NewLocation);
+		}
+	}
 }
 
 void UMH_DropComponent::DropBread()
@@ -39,7 +55,6 @@ void UMH_DropComponent::DropBread()
 	//FName SocketName = TEXT("YourSocketName");
 
 	// GetOwner()가 캐릭터인지 확인
-	AActor* Owner = GetOwner();
 	//USkeletalMeshComponent* MeshComp = Owner->FindComponentByClass<USkeletalMeshComponent>();
 
 	//if (MeshComp && MeshComp->DoesSocketExist(SocketName))
@@ -70,7 +85,6 @@ void UMH_DropComponent::DropBread()
 				SpawnedActor2->SetActorRelativeScale3D(Scale2); // 스폰된 액터의 스케일을 설정
 			}
 			GetWorld()->SpawnActor<AActor>(Bread, Transform1);
-			
 		}
 	}
 	else
@@ -79,4 +93,16 @@ void UMH_DropComponent::DropBread()
 	}
 
 	//}
+}
+
+void UMH_DropComponent::MovePlayer(float Distance)
+{
+	if (Owner && !bIsMoving)
+	{
+		FVector CurrentLocation = Owner->GetActorLocation();
+		FVector ForwardVector = Owner->GetActorForwardVector();
+
+		TargetLocation = CurrentLocation + ForwardVector * Distance;
+		bIsMoving = true;
+	}
 }
