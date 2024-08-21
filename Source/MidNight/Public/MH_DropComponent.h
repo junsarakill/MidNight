@@ -52,6 +52,6 @@ public:
 	class AMH_Scene01GameMode* GM01;
 	
 	UPROPERTY()
-	APawn* OwningPawn;
+	class AMH_Player* OwningPawn;
 		
 };
