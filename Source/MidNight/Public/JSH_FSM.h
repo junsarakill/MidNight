@@ -14,8 +14,14 @@ enum class TopState : uint8
 	Idle,
 	Start,
 	Point01,
+	BreadEat,
 	Point02,
 	Point03,
+	Point04,
+	Point05,
+	Point06,
+	Point08,
+	Point09,
 };
 
 
@@ -42,15 +48,27 @@ public:
 	void IdleState();
 	void StartState(float DeltaTime);
 	void Point01State();
+	void BreadEatState();
 	void Point02State();
 	void Point03State();
+	void Point04State();
+	void Point05State();
+	void Point06State();
+	void Point08State();
+	void Point09State();
 
 	// 한번만 실행되기 위한 Bool 값
 	bool one = true;
 	bool startP = true;
 	bool End01 = true;
+	bool EndBreadEat = true;
 	bool End02 = true;
 	bool End03 = true;
+	bool End04 = true;
+	bool End05 = true;
+	bool End06 = true;
+	bool End08 = true;
+	bool End09 = true;
 
 	// 플레이어(여자, 자신)
 	UPROPERTY()
@@ -73,10 +91,31 @@ public:
 	class AJSH_Point* Point01;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
+	class AJSH_Point* BreadEat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
 	class AJSH_Point* Point02;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
 	class AJSH_Point* Point03;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
+	class AJSH_Point* Point04;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
+	class AJSH_Point* Tel; //텔레포트를 위한 동그라미
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
+	class AJSH_Point* Point05;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
+	class AJSH_Point* Point06;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
+	class AJSH_Point* Point08;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
+	class AJSH_Point* Point09;
 
 
 	UPROPERTY(EditAnywhere, Category=FSM)
@@ -86,9 +125,21 @@ public:
 
 	// 레벨 이동을 위한 함수
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool OpenLevel03 = false;
+	bool OpenLevelBread = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool OpenLevelSnackHome = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool DeleteMan = false; // 텔레포트 후 남자 삭제
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool OpenLevelHand = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool OpenLevelpor = false;
+
+	
 	// 레벨 이동 전 Player의 위치를 저장하는
 	FVector PlayerEndVector;
 
