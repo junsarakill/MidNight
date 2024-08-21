@@ -9,13 +9,13 @@ mp_hands = mp.solutions.hands
 mp_pose = mp.solutions.pose
 
 # 서버 설정
-TCP_IP = '0.0.0.0' # 모든 인터페이스에서 수신
-TCP_PORT = 65432 # 서버 포트 번호
+TCP_IP = '0.0.0.0'  # 모든 인터페이스에서 수신
+TCP_PORT = 65432  # 서버 포트 번호
 BUFFER_SIZE = 1024
 
 # 클라이언트 설정
-#CLIENT_TCP_IP = '192.168.1.59'  # 서버 IP 주소
-CLIENT_TCP_IP = '192.168.1.51'
+# CLIENT_TCP_IP = '192.168.1.59'  # 서버 IP 주소
+CLIENT_TCP_IP = '192.168.1.59'
 CLIENT_TCP_PORT = 23458  # 서버 포트 번호
 
 # 클라이언트 소켓을 저장할 리스트
@@ -182,9 +182,10 @@ def client_process():
             if cv2.waitKey(1) == ord('q'):
                 break
 
-    cap.release()
-    client_socket.close()
-    cv2.destroyAllWindows()
+        # 루프가 끝나면 웹캠과 창을 정상적으로 종료합니다.
+        cap.release()
+        cv2.destroyAllWindows()
+        client_socket.close()
 
 # 서버를 스레드로 실행
 server_thread = threading.Thread(target=start_server)
