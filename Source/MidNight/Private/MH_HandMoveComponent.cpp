@@ -48,6 +48,7 @@ void UMH_HandMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 			if (GM03)
 			{
 				GM03->Scene03 = true;
+				GM03->CheckLevelTransition();
 			}
 		}
 		
