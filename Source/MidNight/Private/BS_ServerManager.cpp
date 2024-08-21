@@ -182,7 +182,7 @@ void ABS_ServerManager::CreateClient(FString ip, int32 port)
 		port = serverPort;
 	}
 
-	getData = TEXT("");
+	getData = -1;
 
 
 
