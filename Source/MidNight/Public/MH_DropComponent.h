@@ -31,7 +31,18 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void DropBread();
-	
-	
+
+	// 이동 함수
+	UFUNCTION(BlueprintCallable, Category="Movement")
+	void MovePlayer(float Distance);
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FVector TargetLocation;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool bIsMoving;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	float MoveSpeed = 300.f;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	class AActor* Owner;
 		
 };
