@@ -57,7 +57,7 @@ public:
 	// FString defaultUrl;
 	//tcp ip, port
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
-	FString serverIP = TEXT("192.168.1.59");
+	FString serverIP = TEXT("127.0.0.1");
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
 	int32 serverPort = 65432;
 
@@ -72,7 +72,9 @@ public:
 	TArray<FUrlName> urlNames;
 
 	// tcp 통신 소켓
+	// 클라이언트 소켓
 	FSocket* ClientSocket;
+	// 서버 주소
     TSharedPtr<FInternetAddr> ServerAddr;
 	
 	
@@ -91,6 +93,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void RunPythonScript(const FString& path);
+
+	UFUNCTION(BlueprintCallable)
+	void RunAsyncScript(EQTEType type);
+	UFUNCTION(BlueprintCallable)
+	void RunAsyncPythonScript(const FString& path);
 
 
 	// 해당 QTE 값 요청

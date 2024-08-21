@@ -9,6 +9,11 @@
 #include "Sockets.h"
 #include "SocketSubsystem.h"
 #include "Interfaces/IPv4/IPv4Address.h" 
+// #include "HAL/RunnableThread.h" 
+// #include "PythonScriptPlugin/PythonScriptPlugin.h"
+// #include "PythonScriptPlugin.h" // PythonScriptPlugin 관련 기본 헤더
+// #include "PythonScriptPlugin/Public/IPythonScriptPlugin.h"
+
 
 // Sets default values
 ABS_ServerManager::ABS_ServerManager()
@@ -133,6 +138,35 @@ void ABS_ServerManager::RunQTEScript(EQTEType type)
 	}
 }
 
+void ABS_ServerManager::RunAsyncScript(EQTEType type)
+{
+	// 해당 스크립트 이름 찾아서 실행
+	for(auto pyName : pyNames)
+	{
+		if(pyName.type == type)
+		{
+			FString pyPath = pyDefaultPath + pyName.pyName;
+			RunAsyncPythonScript(pyPath);
+			break;
+		}
+	}
+}
+
+void ABS_ServerManager::RunAsyncPythonScript(const FString &path)
+{
+	FString PythonExePath = TEXT("C:/Program Files/python/python.exe");
+    if (FPaths::FileExists(PythonExePath) && FPaths::FileExists(path))
+    {
+        // Python 프로세스를 실행
+        FPlatformProcess::CreateProc(*PythonExePath, *path, true, false, false, nullptr, 0, nullptr, nullptr);
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("asddsadjk"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Python executable or script not found."));
+    }
+}
+
 void ABS_ServerManager::CreateClient()
 {
     // 클라이언트 소켓 생성
@@ -153,11 +187,9 @@ void ABS_ServerManager::CreateClient()
 
 void ABS_ServerManager::ReceiveData()
 {
-    if (ClientSocket)
+    if (ClientSocket && ClientSocket->GetConnectionState() == SCS_Connected)
     {
-		GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, TEXT("소켓 있음"));
-
-		// 데이터 있으면 가져오기
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("야호 연결됬다"));
         uint32 Size;
         while (ClientSocket->HasPendingData(Size))
         {
@@ -166,18 +198,28 @@ void ABS_ServerManager::ReceiveData()
 
             // 데이터 수신
             int32 BytesRead = 0;
-            ClientSocket->Recv(ReceivedData.GetData(), ReceivedData.Num(), BytesRead);
-
-            FString ReceivedString = FString(ANSI_TO_TCHAR(reinterpret_cast<const char*>(ReceivedData.GetData())));
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("jk_____Received: %s"), *ReceivedString));
-			// @@ 이 데이터를 사용하기
-			
+            if (ClientSocket->Recv(ReceivedData.GetData(), ReceivedData.Num(), BytesRead))
+            {
+                if (BytesRead > 0)
+                {
+                    FString ReceivedString = FString(ANSI_TO_TCHAR(reinterpret_cast<const char*>(ReceivedData.GetData())));
+                    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("Received: %s"), *ReceivedString));
+                }
+                else
+                {
+                    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No data received."));
+                }
+            }
+            else
+            {
+                GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Failed to receive data."));
+            }
         }
     }
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, TEXT("소켓 없음"));
-	}
+    else
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Socket is not connected or does not exist."));
+    }
 }
 
 void ABS_ServerManager::Disconnect()
