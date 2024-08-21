@@ -61,7 +61,7 @@ def is_hand_closed(hand_landmarks):
             distance = abs(thumb_tip.x - index_finger_tip.x) + abs(thumb_tip.y - index_finger_tip.y)
 
             # 손가락 끝과 엄지 사이의 거리가 특정 임계값 이하인 경우 손이 쥐어졌다고 간주
-            if distance < 0.05:
+            if distance < 0.07:
                 return True
     return False
 
