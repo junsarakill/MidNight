@@ -52,7 +52,7 @@ void UMH_ScaleDownComponent::ScaleDownSnack()
         if (NewScale.SizeSquared() <= 0.3f)
         {
             GM02->Scene02+=1;
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Scene02+!"));
+            // GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Scene02+!"));
             GM02->CheckLevelTransition();
             Owner->Destroy(); // 사라짐
         }

@@ -83,7 +83,7 @@ void UMH_RotationHandComponent::ResetRotation()
 		if (GM04)
 		{
 			GM04->Scene04 = true;
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("asd"));
+			// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("asd"));
 			GM04->CheckLevelTransition();
 		}
 	}

@@ -39,7 +39,7 @@ void ABS_ConnTemp::Tick(float DeltaTime)
 
 void ABS_ConnTemp::RunPython()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("함수 실행"));
+	// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("함수 실행"));
 	// 파이썬 실행 파일 경로
     FString PythonExecutable = TEXT("C:/Program Files/Epic Games/UE_5.4/Engine/Binaries/ThirdParty/Python3/Win64/python.exe"); // 파이썬 경로를 수정하세요.
 	// FString PythonExecutable = TEXT("C:/Program Files/python/python.exe"); // 파이썬 경로를 수정하세요.
@@ -54,10 +54,10 @@ void ABS_ConnTemp::RunPython()
 
     if (processHandle.IsValid())
     {
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Python script is running successfully."));
+		// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Python script is running successfully."));
     }
     else
     {
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Failed to run Python script."));
+		// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Failed to run Python script."));
     }
 }

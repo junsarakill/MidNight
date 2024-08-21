@@ -42,8 +42,8 @@ void UJSH_ManFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 
 	// ...
 
-	FString myState = UEnum::GetValueAsString(MState);
-	DrawDebugString(GetWorld() , GetOwner()->GetActorLocation(), myState , nullptr , FColor::Blue , 0, true, 1);
+	// FString myState = UEnum::GetValueAsString(MState);
+	// DrawDebugString(GetWorld() , GetOwner()->GetActorLocation(), myState , nullptr , FColor::Blue , 0, true, 1);
 
 	switch (MState)
 	{
@@ -70,7 +70,7 @@ void UJSH_ManFSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 	
 		if (distance >= 600.0f)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 1.5f, FColor::Red, TEXT("Teleported to Player"));
+			// GEngine->AddOnScreenDebugMessage(-1, 1.5f, FColor::Red, TEXT("Teleported to Player"));
 			FVector teleportLocation = destination - dir.GetSafeNormal() * 200.0f;
 			Me->SetActorLocation(teleportLocation);
 			MState = Manstate::Idle;
@@ -90,7 +90,7 @@ void UJSH_ManFSM::IdleState()
 	
 	if (dir.Size() >= IdleDistance)
 	{
-		GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("Stop")));
+		// GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("Stop")));
 		MState = Manstate::Walk;
 	}
 }
@@ -103,7 +103,7 @@ void UJSH_ManFSM::WalkState()
 	
 	if (dir.Size() <= ReachDistance)
 	{
-		GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("Stop")));
+		// GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("Stop")));
 		MState = Manstate::Idle;
 	}
 }

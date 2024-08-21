@@ -54,8 +54,8 @@ void UJSH_FSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	FString myState = UEnum::GetValueAsString(TState);
-	DrawDebugString(GetWorld() , GetOwner()->GetActorLocation(), myState , nullptr , FColor::Yellow , 0, true, 1);
+	// FString myState = UEnum::GetValueAsString(TState);
+	// DrawDebugString(GetWorld() , GetOwner()->GetActorLocation(), myState , nullptr , FColor::Yellow , 0, true, 1);
 	
 	// FSM
 	switch (TState)
@@ -219,7 +219,7 @@ void UJSH_FSM::Point01State()
 
 		if (dir.Size() < ReachDistance)
 		{
-			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
+			// GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
 			
 			PlayerEndVector = Player->GetActorLocation();
@@ -254,7 +254,7 @@ void UJSH_FSM::BreadEatState()
 
 		if (dir.Size() < ReachDistance)
 		{
-			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
+			// GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
 			CoinFun();
 			
@@ -290,7 +290,7 @@ void UJSH_FSM::Point02State()
 
 		if (dir.Size() < ReachDistance)
 		{
-			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
+			// GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
 			
 			PlayerEndVector = Player->GetActorLocation();
@@ -322,14 +322,14 @@ void UJSH_FSM::Point03State()
 
 		if (dir.Size() < ReachDistance)
 		{
-			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
+			// GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
 			
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
 			GameInstance->GameProgress = 2;
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
+			// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			//OpenLevel03 = true; // false로는 bp에서 변경
 			End03 = false;
 			OpenLevelSnackHome = true;
@@ -359,14 +359,14 @@ void UJSH_FSM::Point04State()
 
 		if (dir.Size() < ReachDistance)
 		{
-			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
+			// GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
 			
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
 			//GameInstance->GameProgress = 4;
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
+			// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			//OpenLevel03 = true; // false로는 bp에서 변경
 			End04 = false;
 			
@@ -397,14 +397,14 @@ void UJSH_FSM::Point05State()
 
 		if (dir.Size() < ReachDistance)
 		{
-			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
+			// GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
 			
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
 			//GameInstance->GameProgress = 5;
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
+			// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			//OpenLevel03 = true; // false로는 bp에서 변경
 			End05 = false;
 			
@@ -435,14 +435,14 @@ void UJSH_FSM::Point06State()
 
 		if (dir.Size() < ReachDistance)
 		{
-			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
+			// GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
 			
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
 			GameInstance->GameProgress = 4;
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
+			// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			//OpenLevel03 = true; // false로는 bp에서 변경
 			End06 = false;
 			
@@ -477,14 +477,14 @@ void UJSH_FSM::Point08State()
 
 		if (dir.Size() < ReachDistance)
 		{
-			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
+			// GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
 			
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
 			GameInstance->GameProgress = 5;
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
+			// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			//OpenLevel03 = true; // false로는 bp에서 변경
 			End08 = false;
 			
@@ -517,14 +517,14 @@ void UJSH_FSM::Point09State()
 
 		if (dir.Size() < ReachDistance)
 		{
-			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
+			// GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
 			
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
 			
 			GameInstance->GameProgress = 9;
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
+			// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			//OpenLevel03 = true; // false로는 bp에서 변경
 			End09 = false;
 			

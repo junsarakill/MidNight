@@ -46,12 +46,12 @@ void UMH_DropComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		// 목표 방향으로 이동
 		OwningPawn->AddMovementInput(Direction, MoveSpeed);
 
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("ddd"));
+		// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("ddd"));
 
 		// 목표 위치에 도달했는지 확인
 		if (FVector::Dist(CurrentLocation, TargetLocation) < 10.0f)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("asd"));
+			// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("asd"));
 			bIsMoving = false; // 목표 위치에 도달하면 이동 중지
 			if(OwningPawn)
 				OwningPawn->StartQTE();
@@ -61,7 +61,7 @@ void UMH_DropComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void UMH_DropComponent::DropBread()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, TEXT("빵 던지기"));
+	// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, TEXT("빵 던지기"));
 	// 소켓으로 변경예정
 	// 플레이어의 소켓 이름 
 	//FName SocketName = TEXT("YourSocketName");
