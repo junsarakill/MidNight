@@ -10,7 +10,7 @@ mp_drawing = mp.solutions.drawing_utils
 
 # 서버 설정
 TCP_IP = '0.0.0.0' # 모든 인터페이스에서 수신
-TCP_PORT = 65432 # 서버 포트 번호
+TCP_PORT = 23458 # 서버 포트 번호
 BUFFER_SIZE = 1024
 
 # 클라이언트 설정
