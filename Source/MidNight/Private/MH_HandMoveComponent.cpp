@@ -3,6 +3,8 @@
 
 #include "MH_HandMoveComponent.h"
 
+#include "MH_Scene03GameMode.h"
+
 // Sets default values for this component's properties
 UMH_HandMoveComponent::UMH_HandMoveComponent()
 {
@@ -22,6 +24,7 @@ void UMH_HandMoveComponent::BeginPlay()
 	// ...
 
 	CurrentPosition = GetOwner()->GetActorLocation();
+	GM03= Cast<AMH_Scene03GameMode>(GetWorld()->GetAuthGameMode());
 	
 }
 
@@ -42,6 +45,10 @@ void UMH_HandMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 		{
 			CurrentPosition = TargetPosition;
 			bIsMoving = false;
+			if (GM03)
+			{
+				GM03->Scene03 = true;
+			}
 		}
 		
 		GetOwner()->SetActorLocation(CurrentPosition);

@@ -3,6 +3,8 @@
 
 #include "MH_ScaleDownComponent.h"
 
+#include "MH_Scene02GameMode.h"
+
 // Sets default values for this component's properties
 UMH_ScaleDownComponent::UMH_ScaleDownComponent()
 {
@@ -20,6 +22,8 @@ void UMH_ScaleDownComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
+	
+	GM02 = Cast<AMH_Scene02GameMode>(GetWorld()->GetAuthGameMode());
 	
 }
 
@@ -45,7 +49,7 @@ void UMH_ScaleDownComponent::ScaleDownSnack()
         FVector NewScale = CurrentScale * 0.5f; // 90%로 줄이기
         
         // 스케일이 너무 작아지면 삭제
-        if (NewScale.SizeSquared() <= 0.1f)
+        if (NewScale.SizeSquared() <= 0.2f)
         {
             Owner->Destroy(); // 사라짐
         }
@@ -54,5 +58,8 @@ void UMH_ScaleDownComponent::ScaleDownSnack()
             // 새로운 스케일을 설정
             Owner->SetActorScale3D(NewScale);
         }
+    	GM02->Scene02+=1;
+    	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Scene02+!"));
+    	GM02->CheckLevelTransition();
     }
 }

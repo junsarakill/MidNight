@@ -2,6 +2,8 @@
 
 
 #include "MH_RotationHandComponent.h"
+
+#include "MH_Scene04GameModeBase.h"
 #include "TimerManager.h"
 
 // Sets default values for this component's properties
@@ -21,26 +23,30 @@ void UMH_RotationHandComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+
+	GM04 = Cast<AMH_Scene04GameModeBase>(GetWorld()->GetAuthGameMode());
 }
 
 
 // Called every frame
-void UMH_RotationHandComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UMH_RotationHandComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                              FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	if (bIsRotating && CurrentHandActor)
 	{
 		// 회전 중일 때 목표 회전으로 서서히 회전
-		FRotator CurrentRotation = FMath::RInterpTo(CurrentHandActor->GetActorRotation(), TargetRotation, DeltaTime, 2.0f);
+		FRotator CurrentRotation = FMath::RInterpTo(CurrentHandActor->GetActorRotation(), TargetRotation, DeltaTime,
+		                                            2.0f);
 		CurrentHandActor->SetActorRotation(CurrentRotation);
 
 		// 목표 회전에 도달하면 멈춤
 		if (CurrentRotation.Equals(TargetRotation, 1.0f))
 		{
 			bIsRotating = false;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UMH_RotationHandComponent::ResetRotation, 1.0f, false);
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UMH_RotationHandComponent::ResetRotation, 1.0f,
+			                                       false);
 		}
 	}
 }
@@ -62,9 +68,9 @@ void UMH_RotationHandComponent::RotateHand(int32 InputValue)
 
 	if (CurrentHandActor)
 	{
-			InitialRotation = CurrentHandActor->GetActorRotation();
-			TargetRotation = InitialRotation + FRotator(0, 0.f, -120.f); // Roll 축으로 -120도 회전
-			bIsRotating = true;
+		InitialRotation = CurrentHandActor->GetActorRotation();
+		TargetRotation = InitialRotation + FRotator(0, 0.f, -120.f); // Roll 축으로 -120도 회전
+		bIsRotating = true;
 	}
 }
 
@@ -74,6 +80,9 @@ void UMH_RotationHandComponent::ResetRotation()
 	{
 		TargetRotation = InitialRotation;
 		bIsRotating = true;
+		if (GM04)
+		{
+			GM04->Scene04 = true;
+		}
 	}
 }
-
