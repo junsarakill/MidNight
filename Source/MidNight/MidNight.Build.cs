@@ -17,7 +17,6 @@ public class MidNight : ModuleRules
 		, "Json"
 		, "JsonUtilities"
 		, "HTTP"
-		, "PythonScriptPlugin"
 		, "Networking"
 		, "Sockets"
 		 });
