@@ -5,6 +5,7 @@
 
 #include "MH_Scene01GameMode.h"
 #include "TimerManager.h"
+#include "MH_Player.h"
 
 // Sets default values for this component's properties
 UMH_DropComponent::UMH_DropComponent()
@@ -24,7 +25,7 @@ void UMH_DropComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	OwningPawn = Cast<APawn>(GetOwner());
+	OwningPawn = Cast<AMH_Player>(GetOwner());
 	
 	GM01 = Cast<AMH_Scene01GameMode>(GetWorld()->GetAuthGameMode());
 }
@@ -49,12 +50,15 @@ void UMH_DropComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		if (FVector::Dist(CurrentLocation, TargetLocation) < 10.0f)
 		{
 			bIsMoving = false; // 목표 위치에 도달하면 이동 중지
+			if(OwningPawn)
+				OwningPawn->StartQTE();
 		}
 	}
 }
 
 void UMH_DropComponent::DropBread()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, TEXT("빵 던지기"));
 	// 소켓으로 변경예정
 	// 플레이어의 소켓 이름 
 	//FName SocketName = TEXT("YourSocketName");
@@ -65,7 +69,7 @@ void UMH_DropComponent::DropBread()
 	//if (MeshComp && MeshComp->DoesSocketExist(SocketName))
 	//{
 	//FTransform SocketTransform = MeshComp->GetSocketTransform(SocketName);
-	AActor* Owner=GetOwner();
+	AActor* Owner = GetOwner();
 
 	int32 random = FMath::RandRange(0, 9);
 
@@ -97,6 +101,12 @@ void UMH_DropComponent::DropBread()
 		GetWorld()->SpawnActor<AActor>(Bread, Transform1);
 	}
 	//}
+
+	if(GM01)
+	{
+		GM01->Scene01 +=1;
+		GM01->CheckLevelTransition();
+	}
 }
 
 void UMH_DropComponent::MovePlayer()
@@ -110,10 +120,6 @@ void UMH_DropComponent::MovePlayer()
 		TargetLocation = CurrentLocation + ForwardVector * Distance;
 		bIsMoving = true;
 
-		if(GM01)
-		{
-			GM01->Scene01 +=1;
-			GM01->CheckLevelTransition();
-		}
+		
 	}
 }
