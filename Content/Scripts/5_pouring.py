@@ -9,13 +9,13 @@ mp_hands = mp.solutions.hands
 mp_pose = mp.solutions.pose
 
 # 서버 설정
-TCP_IP = '0.0.0.0'  # 모든 인터페이스에서 수신
-TCP_PORT = 65432  # 서버 포트 번호
+TCP_IP = '0.0.0.0' # 모든 인터페이스에서 수신
+TCP_PORT = 65432 # 서버 포트 번호
 BUFFER_SIZE = 1024
 
 # 클라이언트 설정
-# CLIENT_TCP_IP = '192.168.1.59'  # 서버 IP 주소
-CLIENT_TCP_IP = '192.168.1.59'
+#CLIENT_TCP_IP = '192.168.1.59'  # 서버 IP 주소
+CLIENT_TCP_IP = '192.168.1.51'
 CLIENT_TCP_PORT = 23458  # 서버 포트 번호
 
 # 클라이언트 소켓을 저장할 리스트
@@ -160,13 +160,18 @@ def client_process():
                             message = "1"  # 왼손이면 "1" 전송
                             client_socket.send(message.encode())
                             print("왼손 동작 감지, 1 전송")
-                            break
-                        else:
-                            hand_label == "Left"  # 오른손으로 붓는 동작을 감지
+                            cap.release()  # 웹캠 해제
+                            cv2.destroyAllWindows()  # 창 닫기
+                            client_socket.close()
+                            return  # 함수 종료
+                        elif hand_label == "Left":  # 오른손으로 붓는 동작을 감지
                             message = "2"  # 오른손이면 "2" 전송
                             client_socket.send(message.encode())
                             print("오른손 동작 감지, 2 전송")
-                            break
+                            cap.release()  # 웹캠 해제
+                            cv2.destroyAllWindows()  # 창 닫기
+                            client_socket.close()
+                            return  # 함수 종료
                         hand_closed = False  # 동작이 완료되면 주먹 상태를 초기화
                     
                     # 이미지 랜드마크 그리기
@@ -183,10 +188,10 @@ def client_process():
             if cv2.waitKey(1) == ord('q'):
                 break
 
-        # 루프가 끝나면 웹캠과 창을 정상적으로 종료합니다.
-        cap.release()
-        cv2.destroyAllWindows()
-        client_socket.close()
+    # 정상적으로 루프가 종료된 경우
+    cap.release()
+    cv2.destroyAllWindows()
+    client_socket.close()
 
 # 서버를 스레드로 실행
 server_thread = threading.Thread(target=start_server)
