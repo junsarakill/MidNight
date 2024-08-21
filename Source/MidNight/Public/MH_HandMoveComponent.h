@@ -41,6 +41,10 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Movement")
 	float Distance =300.f;
+	
+	UPROPERTY()
+	class AMH_Scene03GameMode* GM03;
+	
 
 		
 };

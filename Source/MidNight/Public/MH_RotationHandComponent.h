@@ -24,6 +24,8 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UPROPERTY()
+	class AMH_Scene04GameModeBase* GM04;
 
 	// 입력값에 따라 손을 회전시키는 함수
 	UFUNCTION(BlueprintCallable)
@@ -43,4 +45,5 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FTimerHandle TimerHandle; // 타이머 핸들러
+
 };

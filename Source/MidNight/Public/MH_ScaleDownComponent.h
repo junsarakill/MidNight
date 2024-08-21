@@ -27,5 +27,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ScaleDownSnack();
 	
+	UPROPERTY()
+	class AMH_Scene02GameMode* GM02;
+	
 		
 };
