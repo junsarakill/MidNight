@@ -3,6 +3,9 @@
 
 #include "MH_DropComponent.h"
 
+#include "MH_Scene01GameMode.h"
+#include "TimerManager.h"
+
 // Sets default values for this component's properties
 UMH_DropComponent::UMH_DropComponent()
 {
@@ -10,7 +13,9 @@ UMH_DropComponent::UMH_DropComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	// 기본값 설정
+	bIsMoving = false;
+	MoveSpeed = .7f;
 }
 
 
@@ -18,8 +23,10 @@ UMH_DropComponent::UMH_DropComponent()
 void UMH_DropComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	Owner = GetOwner();
-	// ...
+	
+	OwningPawn = Cast<APawn>(GetOwner());
+	
+	GM01 = Cast<AMH_Scene01GameMode>(GetWorld()->GetAuthGameMode());
 }
 
 
@@ -28,22 +35,20 @@ void UMH_DropComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                       FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	if (bIsMoving)
+	
+	if (bIsMoving && OwningPawn)
 	{
-		if (Owner)
+		// 목표 위치까지의 방향 벡터 계산
+		FVector CurrentLocation = OwningPawn->GetActorLocation();
+		FVector Direction = (TargetLocation - CurrentLocation).GetSafeNormal();
+
+		// 목표 방향으로 이동
+		OwningPawn->AddMovementInput(Direction, MoveSpeed);
+
+		// 목표 위치에 도달했는지 확인
+		if (FVector::Dist(CurrentLocation, TargetLocation) < 10.0f)
 		{
-			FVector CurrentLocation = Owner->GetActorLocation();
-			FVector Direction = (TargetLocation - CurrentLocation).GetSafeNormal();
-			FVector NewLocation = CurrentLocation + Direction * MoveSpeed * DeltaTime;
-
-			// 목표 위치에 거의 도달했는지 확인
-			if (FVector::Dist(NewLocation, TargetLocation) < 5.0f)
-			{
-				NewLocation = TargetLocation;
-				bIsMoving = false; // 목표 위치에 도달했으므로 이동 중지
-			}
-
-			Owner->SetActorLocation(NewLocation);
+			bIsMoving = false; // 목표 위치에 도달하면 이동 중지
 		}
 	}
 }
@@ -60,13 +65,13 @@ void UMH_DropComponent::DropBread()
 	//if (MeshComp && MeshComp->DoesSocketExist(SocketName))
 	//{
 	//FTransform SocketTransform = MeshComp->GetSocketTransform(SocketName);
-
+	AActor* Owner=GetOwner();
 
 	int32 random = FMath::RandRange(0, 9);
 
 	FTransform posit = GetOwner()->GetActorTransform();
 	FVector Scale1(1.f, 1.f, 1.f);
-	FVector Scale2(0.7f, 0.7f, 0.7f);
+	FVector Scale2(0.8f, 0.8f, 0.8f);
 	FVector Location1(3.f, 40.f, 0.f);
 	FVector Location2(6.f, 50.f, 0.f);
 	FRotator Rotation(0.f, 0.f, 0.f);
@@ -92,16 +97,22 @@ void UMH_DropComponent::DropBread()
 		GetWorld()->SpawnActor<AActor>(Bread, Transform1);
 	}
 
+	if(GM01)
+	{
+		GM01->Scene01 +=1;
+		GM01->CheckLevelTransition();
+	}
 	//}
 }
 
-void UMH_DropComponent::MovePlayer(float Distance)
+void UMH_DropComponent::MovePlayer()
 {
-	if (Owner && !bIsMoving)
+	if (OwningPawn && !bIsMoving)
 	{
-		FVector CurrentLocation = Owner->GetActorLocation();
-		FVector ForwardVector = Owner->GetActorForwardVector();
+		FVector CurrentLocation = OwningPawn->GetActorLocation();
+		FVector ForwardVector = OwningPawn->GetActorForwardVector();
 
+		// 목표 위치 설정
 		TargetLocation = CurrentLocation + ForwardVector * Distance;
 		bIsMoving = true;
 	}
