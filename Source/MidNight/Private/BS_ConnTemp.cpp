@@ -27,14 +27,14 @@ void ABS_ConnTemp::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (FPlatformProcess::IsProcRunning(processHandle))
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Python script is still running."));
-    }
-    else
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Python script has finished."));
-    }
+	// if (FPlatformProcess::IsProcRunning(processHandle))
+    // {
+    //     GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Python script is still running."));
+    // }
+    // else
+    // {
+    //     GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Python script has finished."));
+    // }
 }
 
 void ABS_ConnTemp::RunPython()

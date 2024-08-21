@@ -18,6 +18,8 @@ public class MidNight : ModuleRules
 		, "JsonUtilities"
 		, "HTTP"
 		, "PythonScriptPlugin"
+		, "Networking"
+		, "Sockets"
 		 });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

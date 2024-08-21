@@ -6,6 +6,10 @@
 #include "JsonUtilities.h"
 #include <Kismet/GameplayStatics.h>
 #include <BS_ServerManager.h>
+#include "Networking.h"
+#include "Sockets.h"
+#include "SocketSubsystem.h"
+#include "IPAddress.h"
 
 FString UBS_Utility::ParseJson(const FString& jsonData)
 {
@@ -115,3 +119,65 @@ void UBS_Utility::ResTemp(FHttpRequestPtr req, FHttpResponsePtr res, bool isSucc
 
 //     return sm;
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void UBS_Utility::ConnectAndReceiveData()
+{
+    // 소켓 생성
+    // FSocket* Socket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("default"), false);
+
+    // // IP 주소와 포트 설정
+    // TSharedRef<FInternetAddr> RemoteAddress = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();
+    // bool bIsValid;
+    // RemoteAddress->SetIp(TEXT("192.168.1.59"), bIsValid);
+    // RemoteAddress->SetPort(65432);
+
+    // // 연결 시도
+    // bool bConnected = Socket->Connect(*RemoteAddress);
+    // if (bConnected)
+    // {
+    //     GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("Connected to 192.168.1.59:65432")));
+
+    //     uint32 BufferSize = 1024;
+    //     TArray<uint8> ReceiveBuffer;
+    //     ReceiveBuffer.SetNumUninitialized(BufferSize);
+
+    //     int32 BytesRead = 0;
+
+    //     // 데이터 수신
+    //     while (Socket->Recv(ReceiveBuffer.GetData(), ReceiveBuffer.Num(), BytesRead))
+    //     {
+    //         // 받은 데이터 처리
+    //         FString ReceivedData = FString(ANSI_TO_TCHAR(reinterpret_cast<const char*>(ReceiveBuffer.GetData())));
+    //         GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("Received Data: %s"), *ReceivedData));
+
+    //         // 수신된 바이트 수가 0이면 연결이 종료된 것
+    //         if (BytesRead == 0)
+    //         {
+    //             break;
+    //         }
+    //     }
+    // }
+    // else
+    // {
+    //     GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("Failed to connect to 192.168.1.59:65432")));
+    // }
+
+    // // 소켓 닫기
+    // Socket->Close();
+    
+}
