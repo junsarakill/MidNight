@@ -88,3 +88,8 @@ void AMH_Player::ReceiveDataFromSM(int32 data)
 	// 해당 데이터 대로 행동
 	PlayerAct(data);
 }
+// @@ ok ui
+void AMH_Player::OnOk()
+{
+
+}

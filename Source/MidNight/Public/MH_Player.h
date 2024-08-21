@@ -50,6 +50,10 @@ public:
 	// 행동 이벤트
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
 	void PlayerAct(int32 value);
+
+	// @@ 대충 O 표시 한다는 내용
+	UFUNCTION(BlueprintCallable)
+	void OnOk();
 	
 
 };
