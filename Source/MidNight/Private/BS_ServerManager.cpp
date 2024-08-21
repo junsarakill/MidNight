@@ -5,6 +5,10 @@
 #include "BS_Utility.h"
 #include "Misc/Paths.h"
 #include "HAL/PlatformProcess.h"
+#include "Runtime/Networking/Public/Networking.h"
+#include "Sockets.h"
+#include "SocketSubsystem.h"
+#include "Interfaces/IPv4/IPv4Address.h" 
 
 // Sets default values
 ABS_ServerManager::ABS_ServerManager()
@@ -30,35 +34,90 @@ void ABS_ServerManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// tcp 통신 결과 받기
+	ReceiveData();
 }
 
-void ABS_ServerManager::ReqPostTemp()
-{
-	// json 만들기
-	TMap<FString, FString> data;
-	data.Add("name", "doremi");
-	data.Add("age","99");
-	data.Add("height","675");
 
-	FString json = UBS_Utility::MakeJson(data);
-	// 
-	FString resultUrl = defaultUrl;
-	// 1. http 모듈 생성
-	FHttpModule* http = &FHttpModule::Get();
 
-	// 2. 요청 정보 설정
-	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> httpReq = http->CreateRequest();
+#pragma region 미사용
 
-	// 3. 응답 함수 연결
-	httpReq->OnProcessRequestComplete().BindUObject(this, &ABS_ServerManager::ResPostTemp);
-	httpReq->SetContentAsString(json);
-	httpReq->SetURL(resultUrl);
-	httpReq->SetVerb(TEXT("POST")); // == METHOD
-	httpReq->SetHeader(TEXT("Content-Type"), TEXT("application/json")); // 헤더 설정 json
+// void ABS_ServerManager::ReqGetValue(EQTEType type)
+// {
+// 	FString resultUrl = defaultUrl;
+// 	// 해당 타입 찾아서 url 완성
+// 	for(auto urlName : urlNames)
+// 	{
+// 		if(urlName.type == type)
+// 		{
+// 			resultUrl += urlName.urlName;
+// 			break;
+// 		}
+// 	}
 
-	// 서버 요청
-	httpReq->ProcessRequest();
-}
+// 	// 1. http 모듈 생성
+// 	FHttpModule* http = &FHttpModule::Get();
+
+// 	// 2. 요청 정보 설정
+// 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> httpReq = http->CreateRequest();
+
+// 	// 3. 응답 함수 연결
+// 	httpReq->OnProcessRequestComplete().BindUObject(this, &ABS_ServerManager::ResGetValue);
+// 	httpReq->SetURL(resultUrl);
+// 	httpReq->SetVerb(TEXT("GET")); // == METHOD
+// 	httpReq->SetHeader(TEXT("Content-Type"), TEXT("application/json")); // 헤더 설정 json
+
+// 	// 서버 요청
+// 	httpReq->ProcessRequest();
+
+
+// }
+
+// void ABS_ServerManager::ResGetValue(FHttpRequestPtr req, FHttpResponsePtr res, bool isSuccess)
+// {
+// 	// 응답성공
+// 	if(isSuccess && res.IsValid())
+// 	{
+// 		FString resStr = res->GetContentAsString();
+// 		// @@ 해당 값 가져오기
+// 		// @@ 값으로 뭔가 하기
+
+// 		// FString result = UJK_JsonLib::JsonParse(resStr);
+// 		// FString result = resStr;
+
+// 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("Response : %s"), *resStr));
+
+// 		// mainUI->SetLogText(result);
+// 	}
+// 	// 응답실패
+// 	else
+// 	{
+// 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("요청 실패"));
+// 	}
+// }
+
+// void ABS_ServerManager::ResPostTemp(FHttpRequestPtr req, FHttpResponsePtr res, bool isSuccess)
+// {
+// 	// 응답성공
+// 	if(isSuccess && res.IsValid())
+// 	{
+// 		FString resStr = res->GetContentAsString();
+
+// 		// FString result = UJK_JsonLib::JsonParse(resStr);
+// 		// FString result = resStr;
+
+// 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("Response : %s"), *resStr));
+
+// 		// mainUI->SetLogText(result);
+// 	}
+// 	// 응답실패
+// 	else
+// 	{
+// 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("요청 실패"));
+// 	}
+// }
+
+#pragma endregion
 
 void ABS_ServerManager::RunQTEScript(EQTEType type)
 {
@@ -74,77 +133,64 @@ void ABS_ServerManager::RunQTEScript(EQTEType type)
 	}
 }
 
-void ABS_ServerManager::ReqGetValue(EQTEType type)
+void ABS_ServerManager::CreateClient()
 {
-	FString resultUrl = defaultUrl;
-	// 해당 타입 찾아서 url 완성
-	for(auto urlName : urlNames)
-	{
-		if(urlName.type == type)
-		{
-			resultUrl += urlName.urlName;
-			break;
-		}
-	}
+    // 클라이언트 소켓 생성
+    ClientSocket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("TCP Client"), false);
+    ServerAddr = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();
 
-	// 1. http 모듈 생성
-	FHttpModule* http = &FHttpModule::Get();
+    // 서버 IP와 포트 설정
+    FIPv4Address Ip;
+    FIPv4Address::Parse(serverIP, Ip); // 서버의 IP 주소 (예: localhost)
+    ServerAddr->SetIp(Ip.Value); // IP 주소 설정
+    ServerAddr->SetPort(serverPort); // 서버 포트:
 
-	// 2. 요청 정보 설정
-	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> httpReq = http->CreateRequest();
+    // 서버에 연결
+	FString connStr = ClientSocket->Connect(*ServerAddr) ? TEXT("서버에 연결되었습니다.") : TEXT("서버 연결 실패.");
 
-	// 3. 응답 함수 연결
-	httpReq->OnProcessRequestComplete().BindUObject(this, &ABS_ServerManager::ResGetValue);
-	httpReq->SetURL(resultUrl);
-	httpReq->SetVerb(TEXT("GET")); // == METHOD
-	httpReq->SetHeader(TEXT("Content-Type"), TEXT("application/json")); // 헤더 설정 json
-
-	// 서버 요청
-	httpReq->ProcessRequest();
-
-
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("%s"), *connStr));
 }
 
-void ABS_ServerManager::ResGetValue(FHttpRequestPtr req, FHttpResponsePtr res, bool isSuccess)
+void ABS_ServerManager::ReceiveData()
 {
-	// 응답성공
-	if(isSuccess && res.IsValid())
-	{
-		FString resStr = res->GetContentAsString();
-		// @@ 해당 값 가져오기
-		// @@ 값으로 뭔가 하기
+    if (ClientSocket)
+    {
+		GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, TEXT("소켓 있음"));
 
-		// FString result = UJK_JsonLib::JsonParse(resStr);
-		// FString result = resStr;
+		// 데이터 있으면 가져오기
+        uint32 Size;
+        while (ClientSocket->HasPendingData(Size))
+        {
+            TArray<uint8> ReceivedData;
+            ReceivedData.SetNumUninitialized(FMath::Min(Size, 1024u));
 
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("Response : %s"), *resStr));
+            // 데이터 수신
+            int32 BytesRead = 0;
+            ClientSocket->Recv(ReceivedData.GetData(), ReceivedData.Num(), BytesRead);
 
-		// mainUI->SetLogText(result);
-	}
-	// 응답실패
+            FString ReceivedString = FString(ANSI_TO_TCHAR(reinterpret_cast<const char*>(ReceivedData.GetData())));
+			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("jk_____Received: %s"), *ReceivedString));
+			// @@ 이 데이터를 사용하기
+			
+        }
+    }
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("요청 실패"));
+		GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, TEXT("소켓 없음"));
 	}
 }
 
-void ABS_ServerManager::ResPostTemp(FHttpRequestPtr req, FHttpResponsePtr res, bool isSuccess)
+void ABS_ServerManager::Disconnect()
 {
-	// 응답성공
-	if(isSuccess && res.IsValid())
+	if(ClientSocket)
 	{
-		FString resStr = res->GetContentAsString();
-
-		// FString result = UJK_JsonLib::JsonParse(resStr);
-		// FString result = resStr;
-
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("Response : %s"), *resStr));
-
-		// mainUI->SetLogText(result);
+		ClientSocket->Close();
+		ClientSocket = nullptr;
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("서버와 연결 종료"));
 	}
-	// 응답실패
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("요청 실패"));
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("소켓 없음"));
 	}
+	
 }
