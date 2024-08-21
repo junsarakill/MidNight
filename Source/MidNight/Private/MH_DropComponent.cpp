@@ -96,12 +96,6 @@ void UMH_DropComponent::DropBread()
 	{
 		GetWorld()->SpawnActor<AActor>(Bread, Transform1);
 	}
-
-	if(GM01)
-	{
-		GM01->Scene01 +=1;
-		GM01->CheckLevelTransition();
-	}
 	//}
 }
 
@@ -115,5 +109,11 @@ void UMH_DropComponent::MovePlayer()
 		// 목표 위치 설정
 		TargetLocation = CurrentLocation + ForwardVector * Distance;
 		bIsMoving = true;
+
+		if(GM01)
+		{
+			GM01->Scene01 +=1;
+			GM01->CheckLevelTransition();
+		}
 	}
 }
