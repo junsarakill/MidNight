@@ -15,9 +15,13 @@ TCP_PORT = 65432 # 서버 포트 번호
 BUFFER_SIZE = 1024
 
 # 클라이언트 설정
-#CLIENT_TCP_IP = '192.168.1.59' # 서버 IP 주소
-CLIENT_TCP_IP = '127.0.0.1'
-CLIENT_TCP_PORT = 65432 # 서버 포트 번호
+#CLIENT_TCP_IP = '192.168.1.59'  # 서버 IP 주소
+CLIENT_TCP_IP = '192.168.1.51'
+CLIENT_TCP_PORT = 23458  # 서버 포트 번호
+
+# 클라이언트 리스트를 관리하기 위한 리스트
+clients = []
+clients_lock = threading.Lock()
 
 # 손의 움직임 추적을 위한 변수 초기화
 shake_threshold = 0.05  # 손 움직임이 이 정도 이상이면 흔들린 것으로 간주
@@ -66,27 +70,44 @@ def detect_shake(current_x, previous_x, shake_count, shake_direction):
                 shake_count += 1
     return shake_count, shake_direction
 
+def handle_client(conn, addr):
+    """클라이언트의 요청을 처리하는 함수"""
+    global clients
+    with clients_lock:
+        clients.append(conn)  # 클라이언트를 리스트에 추가
+    print(f"클라이언트와 연결되었습니다: {addr}")
+    
+    try:
+        while True:  # 클라이언트와 데이터 통신
+            data = conn.recv(BUFFER_SIZE).decode()
+            if not data:
+                break
+            print(f"받은 데이터: {data}")
+
+            # 모든 클라이언트에 데이터 전송
+            with clients_lock:
+                for client in clients:
+                    if client != conn:  # 데이터를 보낸 클라이언트를 제외
+                        client.send(data.encode())
+    finally:
+        with clients_lock:
+            clients.remove(conn)  # 클라이언트 리스트에서 제거
+        conn.close()  # 클라이언트와의 연결 종료
+        print(f"클라이언트와의 연결이 종료되었습니다: {addr}")
+
 def start_server():
     """서버를 시작하여 클라이언트로부터 데이터를 수신"""
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((TCP_IP, TCP_PORT))
-    server_socket.listen(1)
+    server_socket.listen(5)  # 최대 5개의 클라이언트를 대기
     print("서버가 시작되었습니다. 클라이언트 연결을 기다리는 중...")
     
-    conn, addr = server_socket.accept()
-    print(f"클라이언트와 연결되었습니다: {addr}")
-    
     while True:
-        data = conn.recv(BUFFER_SIZE).decode()
-        if not data:
-            break
-        print(f"받은 데이터: {data}")
-        if data == "1":
-            print("동작이 감지되어 프로그램을 종료합니다.")
-            break
-    
-    conn.close()
-    server_socket.close()
+        conn, addr = server_socket.accept()  # 클라이언트 연결 수립
+        # 각 클라이언트에 대해 새로운 스레드 생성
+        threading.Thread(target=handle_client, args=(conn, addr)).start()
+
+    server_socket.close()  # 서버 소켓 종료
 
 def client_process():
     """클라이언트 프로세스"""
