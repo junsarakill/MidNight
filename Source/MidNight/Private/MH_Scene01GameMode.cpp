@@ -13,13 +13,6 @@ void AMH_Scene01GameMode::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 }
 
-void AMH_Scene01GameMode::TriggerLevelTransition()
-{
-	//레벨 이동
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("LevelTransition01!"));
-
-}
-
 void AMH_Scene01GameMode::CheckLevelTransition()
 {
 	if (Scene01 == 3)

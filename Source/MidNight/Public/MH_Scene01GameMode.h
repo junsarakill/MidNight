@@ -26,10 +26,10 @@ public:
 	UPROPERTY()
 	FTimerHandle TimerHandle;
 	
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
 	int32 Scene01 = 0;
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable ,BlueprintImplementableEvent)
 	void TriggerLevelTransition();
 
 	UFUNCTION(BlueprintCallable)
