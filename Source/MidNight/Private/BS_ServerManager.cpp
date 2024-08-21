@@ -41,6 +41,8 @@ void ABS_ServerManager::Tick(float DeltaTime)
 
 	// tcp 통신 결과 받기
 	ReceiveData();
+
+	// TestRecieveData();
 }
 
 
@@ -159,7 +161,7 @@ void ABS_ServerManager::RunAsyncPythonScript(const FString &path)
     {
         // Python 프로세스를 실행
         FPlatformProcess::CreateProc(*PythonExePath, *path, true, false, false, nullptr, 0, nullptr, nullptr);
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("asddsadjk"));
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("자체 python에서 실행"));
     }
     else
     {
@@ -167,17 +169,28 @@ void ABS_ServerManager::RunAsyncPythonScript(const FString &path)
     }
 }
 
-void ABS_ServerManager::CreateClient()
+void ABS_ServerManager::CreateClient(FString ip, int32 port)
 {
+	// 기본 값 안되니깐 설정
+	if(ip == TEXT(""))
+	{
+		ip = serverIP;
+	}
+	if(port == 0)
+	{
+		port = serverPort;
+	}
+
+
     // 클라이언트 소켓 생성
     ClientSocket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("TCP Client"), false);
     ServerAddr = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();
 
     // 서버 IP와 포트 설정
     FIPv4Address Ip;
-    FIPv4Address::Parse(serverIP, Ip); // 서버의 IP 주소 (예: localhost)
+    FIPv4Address::Parse(ip, Ip); // 서버의 IP 주소 (예: localhost)
     ServerAddr->SetIp(Ip.Value); // IP 주소 설정
-    ServerAddr->SetPort(serverPort); // 서버 포트:
+    ServerAddr->SetPort(port); // 서버 포트:
 
     // 서버에 연결
 	FString connStr = ClientSocket->Connect(*ServerAddr) ? TEXT("서버에 연결되었습니다.") : TEXT("서버 연결 실패.");
@@ -189,8 +202,8 @@ void ABS_ServerManager::ReceiveData()
 {
     if (ClientSocket && ClientSocket->GetConnectionState() == SCS_Connected)
     {
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("야호 연결됬다"));
         uint32 Size;
+		GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, FString::Printf(TEXT("야호 연결됬다\n데이터 확인 %d"), ClientSocket->HasPendingData(Size)));
         while (ClientSocket->HasPendingData(Size))
         {
             TArray<uint8> ReceivedData;
@@ -204,22 +217,23 @@ void ABS_ServerManager::ReceiveData()
                 {
                     FString ReceivedString = FString(ANSI_TO_TCHAR(reinterpret_cast<const char*>(ReceivedData.GetData())));
                     GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("Received: %s"), *ReceivedString));
+					// @@
                 }
                 else
-                {
+				{
                     GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No data received."));
-                }
+				}
             }
             else
-            {
+			{
                 GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Failed to receive data."));
-            }
+			}
         }
     }
     else
-    {
-        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Socket is not connected or does not exist."));
-    }
+	{
+        GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Red, TEXT("Socket is not connected or does not exist."));
+	}
 }
 
 void ABS_ServerManager::Disconnect()
@@ -236,3 +250,50 @@ void ABS_ServerManager::Disconnect()
 	}
 	
 }
+
+void ABS_ServerManager::TestRecieveData()
+{
+	if(!ClientSocket)
+		return;
+
+	// uint32 pendingSize;
+	// if (!ClientSocket->HasPendingData(pendingSize) )
+	// {
+	// 	return;
+	// }
+
+	TArray<uint8> headerInfo;
+	int32 HeaderSize = 1;
+	headerInfo.AddZeroed(HeaderSize);
+
+	int readNum = 0;
+
+	bool bSuccess = ClientSocket->Recv(headerInfo.GetData(), HeaderSize, readNum, ESocketReceiveFlags::Type::WaitAll);
+
+	if (readNum > 0)
+	{
+		TArray<uint8> BodyInfo;
+		int32 BodySize =headerInfo[0];
+		BodyInfo.AddZeroed(HeaderSize);
+
+		int32 Offset = 0;
+		uint8* results = BodyInfo.GetData();
+		while (BodySize > 0)
+		{
+			int32 NumRead = 0;
+			ClientSocket->Recv(results + Offset, BodySize, NumRead);
+			
+			if (NumRead <= 0)
+			{
+				break;
+			}
+
+			Offset += NumRead;
+			BodySize -= NumRead;
+		}
+
+		GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, FString::Printf(TEXT("데이터 확인 %d"), BodyInfo[0]));
+	}
+
+}
+

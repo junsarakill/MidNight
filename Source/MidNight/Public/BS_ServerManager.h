@@ -57,9 +57,10 @@ public:
 	// FString defaultUrl;
 	//tcp ip, port
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
-	FString serverIP = TEXT("127.0.0.1");
+	//FString serverIP = TEXT("127.0.0.1");
+	FString serverIP = TEXT("192.168.1.59");
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
-	int32 serverPort = 65432;
+	int32 serverPort = 23456;
 
 	// 파이썬 스크립트 기본 경로
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
@@ -114,13 +115,17 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	// 서버와 연결하기
-    void CreateClient();
+    void CreateClient(FString ip, int32 port);
 	// 데이터 받기
 	UFUNCTION(BlueprintCallable)
     void ReceiveData();
 	// 서버와 연결끊기
 	UFUNCTION(BlueprintCallable)
 	void Disconnect();
+
+
+
+	void TestRecieveData();
 	
 
 	
