@@ -53,9 +53,13 @@ public:
 	// Sets default values for this actor's properties
 	ABS_ServerManager();
 
-	// fast api url 기본
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
+	// FString defaultUrl;
+	//tcp ip, port
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
-	FString defaultUrl;
+	FString serverIP = TEXT("192.168.1.59");
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
+	int32 serverPort = 65432;
 
 	// 파이썬 스크립트 기본 경로
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
@@ -66,6 +70,10 @@ public:
 	// url 종류
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Default|Values")
 	TArray<FUrlName> urlNames;
+
+	// tcp 통신 소켓
+	FSocket* ClientSocket;
+    TSharedPtr<FInternetAddr> ServerAddr;
 	
 	
 
@@ -86,15 +94,27 @@ public:
 
 
 	// 해당 QTE 값 요청
-	void ReqGetValue(EQTEType type);
+	// void ReqGetValue(EQTEType type);
 
-	// QTE 값 받기
-	void ResGetValue(FHttpRequestPtr req, FHttpResponsePtr res, bool isSuccess);
+	// // QTE 값 받기
+	// void ResGetValue(FHttpRequestPtr req, FHttpResponsePtr res, bool isSuccess);
 
 
 
-	void ReqPostTemp();
+	// void ReqPostTemp();
 
-	void ResPostTemp(FHttpRequestPtr req, FHttpResponsePtr res, bool isSuccess);
+	// void ResPostTemp(FHttpRequestPtr req, FHttpResponsePtr res, bool isSuccess);
 
+	UFUNCTION(BlueprintCallable)
+	// 서버와 연결하기
+    void CreateClient();
+	// 데이터 받기
+	UFUNCTION(BlueprintCallable)
+    void ReceiveData();
+	// 서버와 연결끊기
+	UFUNCTION(BlueprintCallable)
+	void Disconnect();
+	
+
+	
 };
