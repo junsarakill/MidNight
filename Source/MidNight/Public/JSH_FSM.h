@@ -115,4 +115,13 @@ public:
 
 	// GameInstance
 	class UJSH_GameInstance* GameInstance;
+
+
+	// widget change
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool widgetOn = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int WidgetINt = 0;
 };

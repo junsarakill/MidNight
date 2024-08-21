@@ -154,6 +154,10 @@ void UJSH_FSM::Point01State()
 			GameInstance->GameProgress = 1;
 			GetCoin = true; 
 			End01 = false;
+
+			//위젯을 실행시키는 함수
+			widgetOn = true;
+			WidgetINt = 1;
 		}
 	}
 	else
@@ -178,6 +182,10 @@ void UJSH_FSM::Point02State()
 			GameInstance->GameProgress = 2;
 			GetCoin = true; 
 			End02 = false;
+
+			//위젯을 실행시키는 함수
+			widgetOn = true;
+			WidgetINt = 2;
 		}
 	}
 	else

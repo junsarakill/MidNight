@@ -31,5 +31,5 @@ public:
 	//
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int BookPoint = 0;
-
+	
 };
