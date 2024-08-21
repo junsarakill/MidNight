@@ -28,20 +28,6 @@
 			"TargetAllowList": [
 				"Editor"
 			]
-		},
-		{
-			"Name": "WebSocket",
-			"Enabled": false,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/3e907e815a5e4b92ba0191a6e1172d73"
-		},
-		{
-			"Name": "WebSocketNetworking",
-			"Enabled": true
-		},
-		{
-			"Name": "VaRest",
-			"Enabled": true,
-			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/e47be161e7a24e928560290abd5dcc4f"
 		}
 	]
 }
