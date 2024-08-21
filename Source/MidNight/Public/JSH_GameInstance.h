@@ -17,5 +17,9 @@ class MIDNIGHT_API UJSH_GameInstance : public UGameInstance
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector EndVector; 
+	int GameProgress = 0;
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector EndVector = FVector(610.0f	, -1260.0f, 96.0f); 
 };

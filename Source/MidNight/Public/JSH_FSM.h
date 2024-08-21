@@ -107,4 +107,8 @@ public:
 	bool GetCoin = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int BookPoint = 0;
+
+
+	// GameInstance
+	class UJSH_GameInstance* GameInstance;
 };
