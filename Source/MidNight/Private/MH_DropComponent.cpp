@@ -18,7 +18,7 @@ UMH_DropComponent::UMH_DropComponent()
 void UMH_DropComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	// ...
 }
 
@@ -53,11 +53,11 @@ void UMH_DropComponent::DropBread()
 	FVector Scale1(1.f, 1.f, 1.f);
 	FVector Scale2(0.7f, 0.7f, 0.7f);
 	FVector Location1(3.f, 40.f, 0.f);
-	FVector Location2(5.f, 50.f, 0.f);
+	FVector Location2(6.f, 50.f, 0.f);
 	FRotator Rotation(0.f, 0.f, 0.f);
 
 	FTransform Transform1(Rotation, posit.GetLocation() + Location1, Scale1);
-	FTransform Transform2(Rotation, posit.GetLocation() + Location2, Scale2);
+	FTransform Transform2(Rotation, posit.GetLocation() + Location2, Scale1);
 	
 	if (random < 3)
 	{
@@ -67,7 +67,7 @@ void UMH_DropComponent::DropBread()
 			
 			if (SpawnedActor2)
 			{
-				SpawnedActor2->SetActorScale3D(Scale2); // 스폰된 액터의 스케일을 설정
+				SpawnedActor2->SetActorRelativeScale3D(Scale2); // 스폰된 액터의 스케일을 설정
 			}
 			GetWorld()->SpawnActor<AActor>(Bread, Transform1);
 			
