@@ -27,6 +27,7 @@
 			"Enabled": true,
 			"TargetAllowList": [
 				"Editor"
+				,"Game"
 			]
 		}
 	]
