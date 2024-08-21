@@ -228,8 +228,8 @@ void ABS_ServerManager::ReceiveData()
 						getData = 1;
 						// 데이터를 플레이어에게 전달
 						SendDateToPlayer(getData);
-						// 통신 종료
-						Disconnect();
+						// // 통신 종료
+						// Disconnect();
 					}
                 }
                 else

@@ -46,6 +46,10 @@ public:
 	// 데이터 받기
 	UFUNCTION(BlueprintCallable)
 	void ReceiveDataFromSM(int32 data);
+
+	// 행동 이벤트
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void PlayerAct(int32 value);
 	
 
 };

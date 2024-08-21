@@ -14,6 +14,7 @@ enum class EQTEType : uint8
 	,EATING
 	,CLEAN
 	,GIVE
+	,POUR
 };
 // 스크립트 이름 구조체
 USTRUCT(BlueprintType)

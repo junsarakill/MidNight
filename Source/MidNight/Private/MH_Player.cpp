@@ -58,7 +58,7 @@ void AMH_Player::StartQTE()
 			StartMotionCapture(EQTEType::GIVE);
 			break;
 		case 5:
-			StartMotionCapture(EQTEType::THROW);
+			StartMotionCapture(EQTEType::POUR);
 			break;
 	}
 	
@@ -71,6 +71,7 @@ void AMH_Player::StartMotionCapture(EQTEType type)
 	if(sm)
 	{
 		sm->player = this;
+		onQTE = true;
 		//해당 액터로 뭔가 하기
 		// 모션 캡처 실행
 		sm->RunAsyncScript(type);
@@ -83,5 +84,7 @@ void AMH_Player::StartMotionCapture(EQTEType type)
 void AMH_Player::ReceiveDataFromSM(int32 data)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("데이터 받음 : %d"), data));
-	// @@ 행동 하게 작성
+	onQTE = false;
+	// 해당 데이터 대로 행동
+	PlayerAct(data);
 }
