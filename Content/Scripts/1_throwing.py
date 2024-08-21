@@ -15,7 +15,8 @@ TCP_PORT = 65432  # 서버 포트 번호
 BUFFER_SIZE = 1024
 
 # 클라이언트 설정
-CLIENT_TCP_IP = '192.168.1.59'  # 서버 IP 주소
+#CLIENT_TCP_IP = '192.168.1.59'  # 서버 IP 주소
+CLIENT_TCP_IP = '127.0.0.1'
 CLIENT_TCP_PORT = 65432  # 서버 포트 번호
 
 def start_server():
