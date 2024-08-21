@@ -15,7 +15,7 @@ BUFFER_SIZE = 1024
 
 # 클라이언트 설정
 # CLIENT_TCP_IP = '192.168.1.59'  # 서버 IP 주소
-CLIENT_TCP_IP = '192.168.1.59'
+CLIENT_TCP_IP = '192.168.1.51'
 CLIENT_TCP_PORT = 23458  # 서버 포트 번호
 
 # 클라이언트 소켓을 저장할 리스트

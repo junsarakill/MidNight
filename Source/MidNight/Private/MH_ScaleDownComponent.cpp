@@ -51,6 +51,9 @@ void UMH_ScaleDownComponent::ScaleDownSnack()
         // 스케일이 너무 작아지면 삭제
         if (NewScale.SizeSquared() <= 0.2f)
         {
+            GM02->Scene02+=1;
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Scene02+!"));
+            GM02->CheckLevelTransition();
             Owner->Destroy(); // 사라짐
         }
         else
@@ -58,8 +61,6 @@ void UMH_ScaleDownComponent::ScaleDownSnack()
             // 새로운 스케일을 설정
             Owner->SetActorScale3D(NewScale);
         }
-    	GM02->Scene02+=1;
-    	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Scene02+!"));
-    	GM02->CheckLevelTransition();
+    	
     }
 }
