@@ -3,6 +3,7 @@
 
 #include "JSH_FSM.h"
 
+#include "JSH_FloatingTest.h"
 #include "JSH_GameInstance.h"
 #include "JSH_Player.h"
 #include "JSH_Point.h"
@@ -28,7 +29,7 @@ void UJSH_FSM::BeginPlay()
 
 	Player = Cast<AJSH_Player>(GetOwner());
 
-	
+	GameInstance = Cast<UJSH_GameInstance>(GetWorld()->GetGameInstance());
 }
 
 
@@ -48,7 +49,7 @@ void UJSH_FSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		break;
 		
 	case TopState::Start:
-		StartState();
+		StartState(DeltaTime);
 		break;
 
 	case TopState::Point01:
@@ -97,8 +98,27 @@ void UJSH_FSM::IdleState()
 {
 }
 
-void UJSH_FSM::StartState()
+void UJSH_FSM::StartState(float DeltaTime)
 {
+	// 나중에는 StartWidget이랑 연결해서 startState로 넘어가도록 연결하기
+	// if (startP)
+	// {
+	// 	FVector destination = StartPoint->GetActorLocation();
+	// 	FVector dir = destination - Player->GetActorLocation();
+	// 	Player->AddMovementInput(dir.GetSafeNormal());
+	//
+	// 	if (dir.Size() < ReachDistance)
+	// 	{
+	// 		GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
+	// 		TState = TopState::Idle;
+	// 		startP = false;
+	// 		StartText->startVisible = true;
+	// 	}
+	// }
+	// else
+	// {
+	// 	TState = TopState::Idle;
+	// }
 }
 
 void UJSH_FSM::Point01State()
@@ -113,6 +133,8 @@ void UJSH_FSM::Point01State()
 		{
 			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
+			CoinFun();
+			GetCoin = true; 
 			End01 = false;
 		}
 	}
@@ -134,6 +156,8 @@ void UJSH_FSM::Point02State()
 		{
 			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
+			CoinFun();
+			GetCoin = true; 
 			End02 = false;
 		}
 	}
@@ -157,6 +181,8 @@ void UJSH_FSM::Point03State()
 			TState = TopState::Idle;
 			PlayerEndVector = Player->GetActorLocation();
 			GameinstanceUpdate();
+			GameInstance->GameProgress = 3;
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, FString::Printf(TEXT("GameProgress: %d"), GameInstance->GameProgress));
 			OpenLevel03 = true; // false로는 bp에서 변경
 			End03 = false;
 		}
@@ -171,7 +197,7 @@ void UJSH_FSM::Point03State()
 
 void UJSH_FSM::GameinstanceUpdate() const
 {
-	UJSH_GameInstance* GameInstance = Cast<UJSH_GameInstance>(GetWorld()->GetGameInstance());
+	// UJSH_GameInstance* GameInstance = Cast<UJSH_GameInstance>(GetWorld()->GetGameInstance());
 	
 	// GameInstance가 유효한지 확인
 	if (GameInstance)
@@ -179,5 +205,12 @@ void UJSH_FSM::GameinstanceUpdate() const
 		GameInstance->EndVector = PlayerEndVector;
 	}
 }
+
+void UJSH_FSM::CoinFun()
+{
+	GetCoin = true;
+	BookPoint += 1;
+}
+
 
 

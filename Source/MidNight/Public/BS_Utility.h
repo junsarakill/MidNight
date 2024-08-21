@@ -37,5 +37,6 @@ public:
 	
 	// 서버 매니저 가져오기
 	// static ABS_ServerManager* GetServerManager(UWorld* world);
-	
+	UFUNCTION(BlueprintCallable)
+	static void ConnectAndReceiveData();
 };

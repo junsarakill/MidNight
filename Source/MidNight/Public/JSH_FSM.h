@@ -40,13 +40,14 @@ public:
 
 	// FSM 상태
 	void IdleState();
-	void StartState();
+	void StartState(float DeltaTime);
 	void Point01State();
 	void Point02State();
 	void Point03State();
 
 	// 한번만 실행되기 위한 Bool 값
 	bool one = true;
+	bool startP = true;
 	bool End01 = true;
 	bool End02 = true;
 	bool End03 = true;
@@ -61,6 +62,9 @@ public:
 
 
 	// 이동 포인트 위치
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
+	class AJSH_Point* StartPoint;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
 	class AJSH_Point* Point01;
 
@@ -85,4 +89,26 @@ public:
 	FVector PlayerEndVector;
 
 	void GameinstanceUpdate() const;
+	
+
+	// Start Text
+	float currtime = 0;
+	float startime = 2.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FSM)
+	class AJSH_FloatingTest* StartText;
+
+
+
+	// Coin
+	void CoinFun();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool GetCoin = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int BookPoint = 0;
+
+
+	// GameInstance
+	class UJSH_GameInstance* GameInstance;
 };
