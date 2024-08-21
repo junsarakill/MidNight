@@ -161,7 +161,8 @@ def client_process():
                             client_socket.send(message.encode())
                             print("왼손 동작 감지, 1 전송")
                             break
-                        elif hand_label == "Left":  # 오른손으로 붓는 동작을 감지
+                        else:
+                            hand_label == "Left"  # 오른손으로 붓는 동작을 감지
                             message = "2"  # 오른손이면 "2" 전송
                             client_socket.send(message.encode())
                             print("오른손 동작 감지, 2 전송")
