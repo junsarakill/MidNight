@@ -52,9 +52,13 @@ public:
 	bool End02 = true;
 	bool End03 = true;
 
-	// 플레이어
+	// 플레이어(여자, 자신)
 	UPROPERTY()
 	class AJSH_Player* Player;
+
+	// // 플레이어(남자)
+	// UPROPERTY()
+	// class AJSH_Man* Man;
 
 	// 우클릭 시 저장되는 Name
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -106,7 +110,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool GetCoin = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int BookPoint = 0;
+	// int BookPoint = 0; // GameInstacne로 옮김 변경
 
 
 	// GameInstance

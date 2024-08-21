@@ -87,11 +87,28 @@ void UJSH_FSM::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	// GEngine->AddOnScreenDebugMessage(8, 1, FColor::Blue, FString::Printf(TEXT("Tt")));
 	//
-	// if (ClickName == "BP_TestCircle")
-	// {
-	// 	GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("Test")));
-	// 	ClickName = "None";
-	// }
+
+
+	// GameInstance의 GameProgress에 따라 , Point 막아주기
+	if (GameInstance->GameProgress == 0)
+	{
+	}
+	else if(GameInstance->GameProgress == 1)
+	{
+		End01 = false;
+	}
+	else if(GameInstance->GameProgress == 2)
+	{
+		End01 = false;
+		End02 = false;
+	}
+	else if(GameInstance->GameProgress == 3)
+	{
+		End01 = false;
+		End02 = false;
+		End03 = false;
+	}
+		
 }
 
 void UJSH_FSM::IdleState()
@@ -134,6 +151,7 @@ void UJSH_FSM::Point01State()
 			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
 			CoinFun();
+			GameInstance->GameProgress = 1;
 			GetCoin = true; 
 			End01 = false;
 		}
@@ -157,6 +175,7 @@ void UJSH_FSM::Point02State()
 			GEngine->AddOnScreenDebugMessage(9, 1, FColor::Yellow, FString::Printf(TEXT("yeee")));
 			TState = TopState::Idle;
 			CoinFun();
+			GameInstance->GameProgress = 2;
 			GetCoin = true; 
 			End02 = false;
 		}
@@ -209,7 +228,7 @@ void UJSH_FSM::GameinstanceUpdate() const
 void UJSH_FSM::CoinFun()
 {
 	GetCoin = true;
-	BookPoint += 1;
+	GameInstance->BookPoint += 1;
 }
 
 

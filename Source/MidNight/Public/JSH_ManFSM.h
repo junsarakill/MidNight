@@ -50,7 +50,16 @@ public:
 
 
 
-	UPROPERTY(EditAnywhere, Category=FSM)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=FSM)
 	float ReachDistance = 150.0f;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category=FSM)
+	float IdleDistance = 300.0f;
+
+	
+
+	// Cage에 갇히기 전 까지 돌다가, Cage 갇히면 false로 바꿔줘야 함
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool Cage = true;
 
 };
