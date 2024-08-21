@@ -69,7 +69,7 @@ void UMH_RotationHandComponent::RotateHand(int32 InputValue)
 	if (CurrentHandActor)
 	{
 		InitialRotation = CurrentHandActor->GetActorRotation();
-		TargetRotation = InitialRotation + FRotator(0, 0.f, -120.f); // Roll 축으로 -120도 회전
+		TargetRotation = InitialRotation + FRotator(0, 0.f, -100.f); // Roll 축으로 -120도 회전
 		bIsRotating = true;
 	}
 }
