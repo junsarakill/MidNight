@@ -49,7 +49,7 @@ void UMH_ScaleDownComponent::ScaleDownSnack()
         FVector NewScale = CurrentScale * 0.5f; // 90%로 줄이기
         
         // 스케일이 너무 작아지면 삭제
-        if (NewScale.SizeSquared() <= 0.3f)
+        if (NewScale.SizeSquared() <= 0.75f)
         {
             GM02->Scene02+=1;
             // GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Scene02+!"));
