@@ -46,9 +46,12 @@ void UMH_DropComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		// 목표 방향으로 이동
 		OwningPawn->AddMovementInput(Direction, MoveSpeed);
 
+		// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("ddd"));
+
 		// 목표 위치에 도달했는지 확인
 		if (FVector::Dist(CurrentLocation, TargetLocation) < 10.0f)
 		{
+			// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("asd"));
 			bIsMoving = false; // 목표 위치에 도달하면 이동 중지
 			if(OwningPawn)
 				OwningPawn->StartQTE();
@@ -58,7 +61,7 @@ void UMH_DropComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void UMH_DropComponent::DropBread()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, TEXT("빵 던지기"));
+	// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, TEXT("빵 던지기"));
 	// 소켓으로 변경예정
 	// 플레이어의 소켓 이름 
 	//FName SocketName = TEXT("YourSocketName");
@@ -82,6 +85,16 @@ void UMH_DropComponent::DropBread()
 
 	FTransform Transform1(Rotation, posit.GetLocation() + Location1, Scale1);
 	FTransform Transform2(Rotation, posit.GetLocation() + Location2, Scale1);
+
+	if (DropAnimPlay)
+	{
+		/*
+		UAnimInstance* AnimInstance = GetOwner()->FindComponentByClass<USkeletalMeshComponent>();
+		if (AnimInstance && !AnimInstance->Montage_IsPlaying(MontageToPlay))
+		{
+			AnimInstance->Montage_Play(MontageToPlay);
+		}*/
+	}
 	
 	if (random < 3)
 	{
@@ -119,7 +132,6 @@ void UMH_DropComponent::MovePlayer()
 		// 목표 위치 설정
 		TargetLocation = CurrentLocation + ForwardVector * Distance;
 		bIsMoving = true;
-
 		
 	}
 }

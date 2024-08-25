@@ -95,7 +95,7 @@ void UBS_Utility::ResTemp(FHttpRequestPtr req, FHttpResponsePtr res, bool isSucc
 		FString result = UBS_Utility::ParseJson(resStr);
         
 		// UE_LOG(LogTemp, Log, TEXT("Response: %s"), *result);
-        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("%s"), *result));
+        // GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("%s"), *result));
 
 		// mainUI->SetLogText(result);
 	}
@@ -103,7 +103,7 @@ void UBS_Utility::ResTemp(FHttpRequestPtr req, FHttpResponsePtr res, bool isSucc
 	else
         // 
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("요청 실패"));
+		// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("요청 실패"));
 	}
 }
 

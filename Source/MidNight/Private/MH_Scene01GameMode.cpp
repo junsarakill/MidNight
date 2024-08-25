@@ -15,7 +15,7 @@ void AMH_Scene01GameMode::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void AMH_Scene01GameMode::CheckLevelTransition()
 {
-	if (Scene01 == 4)
+	if (Scene01 == 3)
 	{
 		GetWorldTimerManager().SetTimer(TimerHandle, this, &AMH_Scene01GameMode::TriggerLevelTransition, 3.0f, false);
 	}

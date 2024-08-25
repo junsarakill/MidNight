@@ -5,6 +5,7 @@
 
 #include "MH_Scene04GameModeBase.h"
 #include "TimerManager.h"
+#include <Kismet/GameplayStatics.h>
 
 // Sets default values for this component's properties
 UMH_RotationHandComponent::UMH_RotationHandComponent()
@@ -56,20 +57,21 @@ void UMH_RotationHandComponent::RotateHand(int32 InputValue)
 	FString TagName = (InputValue == 1) ? TEXT("left") : TEXT("right");
 	CurrentHandActor = nullptr;
 
-	// 월드에서 지정된 태그를 가진 액터를 찾음
 	for (AActor* Actor : GetWorld()->GetCurrentLevel()->Actors)
 	{
-		if (Actor && Actor->GetName().Contains(TEXT("GretelHand")))
+		if (Actor && Actor->GetName().Contains(TEXT("Hand")))
 		{
 			CurrentHandActor = Actor;
 			break;
 		}
 	}
 
+	CurrentHandActor = GetOwner();
+
 	if (CurrentHandActor)
 	{
 		InitialRotation = CurrentHandActor->GetActorRotation();
-		TargetRotation = InitialRotation + FRotator(0, 0.f, -120.f); // Roll 축으로 -120도 회전
+		TargetRotation = InitialRotation + FRotator(0, 0.f, -100.f); // Roll 축으로 -120도 회전
 		bIsRotating = true;
 	}
 }
@@ -83,6 +85,8 @@ void UMH_RotationHandComponent::ResetRotation()
 		if (GM04)
 		{
 			GM04->Scene04 = true;
+			// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("asd"));
+			GM04->CheckLevelTransition();
 		}
 	}
 }

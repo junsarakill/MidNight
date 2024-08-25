@@ -83,7 +83,7 @@ void AMH_Player::StartMotionCapture(EQTEType type)
 // 데이터 받기
 void AMH_Player::ReceiveDataFromSM(int32 data)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("데이터 받음 : %d"), data));
+	// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("데이터 받음 : %d"), data));
 	onQTE = false;
 	// 해당 데이터 대로 행동
 	PlayerAct(data);

@@ -21,7 +21,7 @@ public:
 	int GameProgress = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector EndVector = FVector(610.0f	, -1260.0f, 96.0f); 
+	FVector EndVector = FVector(2830.000004f	, 2236.494205f, 4402.878477f); 
 	
 	// Player 남자
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

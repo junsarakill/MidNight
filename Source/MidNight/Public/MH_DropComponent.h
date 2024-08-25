@@ -53,5 +53,8 @@ public:
 	
 	UPROPERTY()
 	class AMH_Player* OwningPawn;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation", meta = (AllowPrivateAccess = "true"))
+	class UAnimMontage* DropAnimPlay;
 		
 };

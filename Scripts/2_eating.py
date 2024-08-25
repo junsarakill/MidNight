@@ -31,7 +31,7 @@ def is_mouth_open(landmarks, image_shape):
     lip_distance = bottom_lip_y - top_lip_y
 
     # 특정 임계값 이상으로 입이 열려있으면 먹는 행동으로 간주
-    return lip_distance > 20
+    return lip_distance > 10
 
 def are_hands_above_shoulders(pose_landmarks, hand_landmarks, image_shape):
     """손이 어깨 위에 있는지 확인하는 함수"""

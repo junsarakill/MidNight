@@ -149,7 +149,7 @@ void ABS_ServerManager::RunAsyncScript(EQTEType type)
 	{
 		if(pyName.type == type)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("%s 타입 실행"), *UEnum::GetValueAsString(type)));
+			// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("%s 타입 실행"), *UEnum::GetValueAsString(type)));
 			FString pyPath = pyDefaultPath + pyName.pyName;
 			RunAsyncPythonScript(pyPath);
 			break;
@@ -164,7 +164,7 @@ void ABS_ServerManager::RunAsyncPythonScript(const FString &path)
     {
         // Python 프로세스를 실행
         FPlatformProcess::CreateProc(*PythonExePath, *path, true, false, false, nullptr, 0, nullptr, nullptr);
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("자체 python에서 실행"));
+		// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("자체 python에서 실행"));
     }
     else
     {
@@ -201,7 +201,7 @@ void ABS_ServerManager::CreateClient(FString ip, int32 port)
     // 서버에 연결
 	FString connStr = ClientSocket->Connect(*ServerAddr) ? TEXT("서버에 연결되었습니다.") : TEXT("서버 연결 실패.");
 
-	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("%s"), *connStr));
+	// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, FString::Printf(TEXT("%s"), *connStr));
 }
 
 void ABS_ServerManager::ReceiveData()
@@ -209,7 +209,7 @@ void ABS_ServerManager::ReceiveData()
     if (ClientSocket && ClientSocket->GetConnectionState() == SCS_Connected)
     {
         uint32 Size;
-		GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, FString::Printf(TEXT("야호 연결됬다\n데이터 확인 %d"), ClientSocket->HasPendingData(Size)));
+		// GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, FString::Printf(TEXT("야호 연결됬다\n데이터 확인 %d"), ClientSocket->HasPendingData(Size)));
         while (ClientSocket->HasPendingData(Size))
         {
             TArray<uint8> ReceivedData;
@@ -222,11 +222,11 @@ void ABS_ServerManager::ReceiveData()
                 if (BytesRead > 0)
                 {
                     FString ReceivedString = FString(ANSI_TO_TCHAR(reinterpret_cast<const char*>(ReceivedData.GetData())));
-                    GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, FString::Printf(TEXT("Received: %s"), *ReceivedString));
+                    // GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, FString::Printf(TEXT("Received: %s"), *ReceivedString));
 					// @@ 데이터 처리
 					if(ReceivedString.Contains(TEXT("1")))
 					{
-						GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, FString::Printf(TEXT("모션 캡쳐 성공")));
+						// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Yellow, FString::Printf(TEXT("모션 캡쳐 성공")));
 						getData = 1;
 						// 데이터를 플레이어에게 전달
 						SendDateToPlayer(getData);
@@ -236,18 +236,18 @@ void ABS_ServerManager::ReceiveData()
                 }
                 else
 				{
-                    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No data received."));
+                    // GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No data received."));
 				}
             }
             else
 			{
-                GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Failed to receive data."));
+                // GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Failed to receive data."));
 			}
         }
     }
     else
 	{
-        GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Red, TEXT("Socket is not connected or does not exist."));
+        // GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Red, TEXT("Socket is not connected or does not exist."));
 	}
 }
 
@@ -257,11 +257,11 @@ void ABS_ServerManager::Disconnect()
 	{
 		ClientSocket->Close();
 		ClientSocket = nullptr;
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("서버와 연결 종료"));
+		// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("서버와 연결 종료"));
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("소켓 없음"));
+		// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("소켓 없음"));
 	}
 	
 }
@@ -270,7 +270,7 @@ void ABS_ServerManager::SendDateToPlayer(int32 data)
 {
 	if(!player)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("플레이어 없음"));
+		// GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("플레이어 없음"));
 		return;
 	}
 	
@@ -318,7 +318,7 @@ void ABS_ServerManager::TestRecieveData()
 			BodySize -= NumRead;
 		}
 
-		GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, FString::Printf(TEXT("데이터 확인 %d"), BodyInfo[0]));
+		// GEngine->AddOnScreenDebugMessage(-1, -1.f, FColor::Green, FString::Printf(TEXT("데이터 확인 %d"), BodyInfo[0]));
 	}
 
 }
